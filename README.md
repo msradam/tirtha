@@ -37,7 +37,13 @@ TerraMind multimodal ablation (zero-shot road-presence linear probe, 5-fold CV R
 
 DEM adds 5 pts over optical-only — this is the multimodal value of TerraMind that generic ViTs don't have.
 
-See [`docs/figures/`](docs/figures/) for all 12 headline visualizations.
+### Methodological extensions also working at toy scale
+
+**Fusion graph (figure 13)**: Built the proper on/off-road fusion as a scipy sparse adjacency — pixel grid (Tobler-weighted) + OSMnx walk graph (per-edge length × walking speed), joined at road-entry pixels. 67,112 nodes, 531,837 edges, Dijkstra in 0.0s. At Blantyre's dense 10m road resolution it agrees with raster-only fusion at Spearman 0.98 (MAE 1.19 min) — confirming that for dense urban grids, raster-only is already a valid fusion. The graph-based fusion's value shows up at country scale and for sparse rural roads.
+
+**Uncertainty quantification (figure 14)** — *the open lane no other healthcare-accessibility work currently provides*: B=200 bootstrap probes over the TerraMind S2+S1+DEM embeddings → P(road) ± σ per patch → K=40 perturbed friction surfaces → ensemble MCP → per-pixel mean, std, and 95% CI on travel time. Population-weighted mean 95% CI width: 0.22 min. MAP 2020 has no uncertainty layer; AccessMod has no uncertainty layer; tirtha does.
+
+See [`docs/figures/`](docs/figures/) for all 14 headline visualizations.
 
 ---
 
