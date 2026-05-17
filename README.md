@@ -1,8 +1,43 @@
-# friction
+# tirtha
 
 > Open, reproducible travel-time-to-healthcare mapping — pairing IBM/ESA's **TerraMind** foundation model with classical road-graph routing to estimate physical access to health facilities, benchmarked against the Malaria Atlas Project's 2020 raster.
 
-**Status:** 🚧 In active rebuild. See [methodology sketch](docs/methodology.md) for the design; see the [archive branch](https://github.com/msradam/geospatial-routing-api/tree/archive/django-api) for the 2019 implementation this work transforms.
+**The name** — *tirtha* (तीर्थ) is Sanskrit for "crossing place" — a ford in a river where you can safely cross, also a place of pilgrimage where people travel for healing. This project maps every person's distance from the nearest tirtha.
+
+**Status:** 🚧 v0 toy proof-of-concept working end-to-end on a 2.5 km × 2.5 km chip in Blantyre, Malawi. Country-scale v1 is the next milestone. See [`docs/methodology.md`](docs/methodology.md) for technical design, [`docs/plain_english.md`](docs/plain_english.md) for the project explained without jargon, and the [archive branch](https://github.com/msradam/geospatial-routing-api/tree/archive/django-api) for the 2019 implementation this transforms.
+
+## Headline result (v0 toy, Blantyre chip)
+
+Per-pixel comparison against the published [Malaria Atlas Project 2020](https://malariaatlas.org/project-resources/accessibility-to-healthcare/) walking-only raster (Weiss et al., *Nature Medicine*):
+
+| Metric | Value |
+|---|---|
+| Spearman ρ | **0.674** |
+| Pearson r | 0.667 |
+| MAE | 2.89 min |
+| Bias (ours − MAP) | +0.44 min |
+
+Population-weighted accessibility (WorldPop UN-adjusted):
+
+| Walking time | Tirtha v0 | MAP 2020 | Δ |
+|---|---|---|---|
+| ≤ 5 min | 22.9% | 22.5% | +0.4 pp |
+| ≤ 10 min | 60.3% | 67.1% | -6.8 pp |
+| ≤ 15 min | 89.5% | 98.4% | -8.9 pp |
+| ≤ 30 min | 100% | 100% | — |
+
+TerraMind multimodal ablation (zero-shot road-presence linear probe, 5-fold CV ROC-AUC):
+
+| Modalities | ROC-AUC |
+|---|---|
+| S2 optical only | 0.712 ± 0.089 |
+| S2 + S1 radar | 0.707 ± 0.080 |
+| **S2 + S1 + DEM** | **0.748 ± 0.087** |
+| TiM · S2 + S1 + DEM | 0.705 ± 0.165 |
+
+DEM adds 5 pts over optical-only — this is the multimodal value of TerraMind that generic ViTs don't have.
+
+See [`docs/figures/`](docs/figures/) for all 12 headline visualizations.
 
 ---
 
@@ -39,7 +74,7 @@ When complete, this repo ships:
 - **One marimo notebook** — end-to-end pipeline for one country/region, runnable in Colab.
 - **One map** — kepler.gl viz with three toggleable layers (MAP baseline, this pipeline, difference).
 - **One number** — MAE vs MAP raster and MAE vs DHS reported times.
-- **One CLI** — `uv run friction run --country MWI --admin1 "Southern Region"`.
+- **One CLI** — `uv run tirtha run --country MWI --admin1 "Southern Region"`.
 
 ## Quickstart
 
@@ -48,7 +83,7 @@ When complete, this repo ships:
 ## Repo structure
 
 ```
-friction/
+tirtha/
 ├── data/       # healthsites.io, STAC, DHS loaders
 ├── model/      # TerraMind wrapper, fine-tune head
 ├── routing/    # OSMnx road graph (ported from 2019)
