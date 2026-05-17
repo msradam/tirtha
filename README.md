@@ -28,7 +28,9 @@ Spearman ρ matrix (all three methods agree internally at ρ > 0.98; all differ 
 | T-FM | | | 1.000 | **0.662** |
 | MAP | | | | 1.000 |
 
-Tirtha additionally provides **calibrated per-pixel uncertainty bounds** (figure 14, B=200 bootstrap × K=40 friction ensemble). Wu 2025 and MAP 2020 have none.
+Tirtha additionally provides **per-pixel uncertainty bounds** (figure 14, B=200 bootstrap × K=40 friction ensemble). Wu 2025 and MAP 2020 have none.
+
+**Calibration caveat (honest)** — figure 18 documents that tirtha's current CIs are *severely under-calibrated* against MAP 2020 as a proxy reference: ECE = 0.485, empirical 95% coverage = 3%. The bootstrap-over-196-patches methodology produces over-confident intervals. Path to calibrated UQ: TerraMind fine-tune with DHS supervision (adds epistemic variation) + deep ensembles or conformal calibration against held-out DHS clusters. This is the principled post-hoc fix. Until then: tirtha provides *uncertainty bounds*, not *calibrated uncertainty bounds*. The distinction matters for the methodology paper.
 
 TerraMind multimodal ablation (zero-shot road-presence linear probe, 5-fold CV ROC-AUC):
 
@@ -47,7 +49,7 @@ DEM adds 5 pts over optical-only — this is the multimodal value of TerraMind t
 
 **Uncertainty quantification (figure 14)** — *the open lane no other healthcare-accessibility work currently provides*: B=200 bootstrap probes over the TerraMind S2+S1+DEM embeddings → P(road) ± σ per patch → K=40 perturbed friction surfaces → ensemble MCP → per-pixel mean, std, and 95% CI on travel time. Population-weighted mean 95% CI width: 0.22 min. MAP 2020 has no uncertainty layer; AccessMod has no uncertainty layer; tirtha does.
 
-See [`docs/figures/`](docs/figures/) for all 17 headline visualizations — including figure 17 (Tirtha vs Wu vs MAP four-way head-to-head).
+See [`docs/figures/`](docs/figures/) for all 18 headline visualizations — including figure 17 (Tirtha vs Wu vs MAP four-way head-to-head) and figure 18 (calibration limitation, honestly documented).
 
 ---
 
