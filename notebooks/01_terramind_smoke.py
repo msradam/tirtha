@@ -2,13 +2,13 @@
 
 End-to-end smallest-possible proof:
 
-  Phase A — Polyglot xarray Dataset
+  Phase A: Polyglot xarray Dataset
     - Sentinel-2 L2A chip from Microsoft Planetary Computer (odc-stac)
     - OSM roads + healthcare facilities via OSMnx
     - Roads rasterized onto the S2 grid
     - All on EPSG:32736, 10m, shared (y, x) grid + sidecar GeoDataFrame
 
-  Phase B — TerraMind inference
+  Phase B: TerraMind inference
     - Re-fetch all 12 S2L2A bands at 10m, resampled
     - Crop 224×224, normalize with v1 pretraining stats
     - TerraMind-Small (22.5M params) on MPS / CPU
@@ -44,7 +44,7 @@ def _():
 
         Smallest possible proof: a single xarray `Dataset` holding
         Sentinel-2 raster bands and OSM-rasterized vector data on the
-        same coordinate grid — then fed to TerraMind-Small to confirm
+        same coordinate grid, then fed to TerraMind-Small to confirm
         the foundation model's embeddings carry signal that's relevant
         to the routing problem.
         """
@@ -92,7 +92,7 @@ def _(BBOX_LATLON, DATE_RANGE, MAX_CLOUD_PCT, mo):
         f"""
         ## Target
 
-        - **Region**: Blantyre, Malawi — around Queen Elizabeth Central Hospital
+        - **Region**: Blantyre, Malawi (around Queen Elizabeth Central Hospital)
         - **BBox (W, S, E, N)**: `{BBOX_LATLON}`
         - **Date**: `{DATE_RANGE}` (dry season)
         - **Max cloud**: `{MAX_CLOUD_PCT}%`
@@ -135,7 +135,7 @@ def _(ASSETS, BBOX_LATLON, DATE_RANGE, MAX_CLOUD_PCT, TARGET_CRS, TARGET_RES_M):
 @app.cell
 def _(items, mo, s2):
     rows = "\n".join(
-        f"- `{it.id}` — {it.properties['eo:cloud_cover']:.2f}% clouds"
+        f"- `{it.id}`: {it.properties['eo:cloud_cover']:.2f}% clouds"
         for it in items[:5]
     )
     mo.md(
@@ -485,7 +485,7 @@ def _(auc_scores, mo, patch_road, y_label):
     has_road = int(y_label.sum())
     no_road = int(len(y_label) - y_label.sum())
     if auc_scores is None:
-        result = "Skipped — class imbalance too extreme for CV."
+        result = "Skipped (class imbalance too extreme for CV)."
     else:
         result = (
             f"**ROC-AUC**: {auc_scores.mean():.3f} ± {auc_scores.std():.3f}  \n"
@@ -493,7 +493,7 @@ def _(auc_scores, mo, patch_road, y_label):
         )
     mo.md(
         f"""
-        ## Linear probe — does the embedding 'see' roads?
+        ## Linear probe: does the embedding 'see' roads?
 
         Aggregate the rasterized OSM road map to the same 14×14 patch
         grid (each patch = 16×16 pixels = 160m × 160m on the ground).
@@ -508,7 +508,7 @@ def _(auc_scores, mo, patch_road, y_label):
 
         > 0.5 = chance, 1.0 = perfect. A value comfortably above 0.5
         > confirms TerraMind's pretrained embedding carries spatial
-        > signal that's *linearly relevant* to road infrastructure —
+        > signal that's *linearly relevant* to road infrastructure.
         > the foundation model is doing useful work for free.
         """
     )

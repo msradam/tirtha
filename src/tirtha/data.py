@@ -1,4 +1,4 @@
-"""Data loaders — all public infrastructure, no paid APIs, no registration walls.
+"""Data loaders. All public infrastructure, no paid APIs, no registration walls.
 
 Sentinel-1/2 + NASADEM via Microsoft Planetary Computer STAC.
 OSM roads, healthcare amenities, buildings via OSMnx.
@@ -37,7 +37,7 @@ def load_dem(
 
     Returns an ``xarray.DataArray`` of elevation in meters.
     """
-    import odc.geo.xr  # noqa: F401 — registers .odc accessor
+    import odc.geo.xr  # noqa: F401 (registers the .odc accessor)
     from odc.stac import load
 
     catalog = _pc_catalog()
@@ -118,7 +118,7 @@ def load_osm_facilities(
 
 
 def load_osm_buildings(bbox: tuple[float, float, float, float], crs: str):
-    """Fetch OSM building footprints — usable as a population proxy."""
+    """Fetch OSM building footprints. Usable as a population proxy."""
     import osmnx as ox
 
     return ox.features_from_bbox(bbox=bbox, tags={"building": True}).to_crs(crs)
@@ -162,7 +162,7 @@ def download_worldpop(source: WorldPopSource, cache_dir: str | os.PathLike) -> s
     """Download a WorldPop UN-adjusted population raster to ``cache_dir``.
 
     Returns the local path. Raises if the WorldPop server returns non-200 (the
-    HIC vs LMIC product mismatch is a common reason — see ``WorldPopSource``).
+    HIC vs LMIC product mismatch is a common reason; see ``WorldPopSource``).
     """
     cache_dir = os.fspath(cache_dir)
     os.makedirs(cache_dir, exist_ok=True)
@@ -170,7 +170,7 @@ def download_worldpop(source: WorldPopSource, cache_dir: str | os.PathLike) -> s
     if os.path.exists(path) and os.path.getsize(path) > 1024:
         return path
     r = requests.get(source.url, timeout=600, stream=True)
-    r.raise_for_status()  # important — we silently wrote 0-byte files before
+    r.raise_for_status()  # important: without this we silently write 0-byte files
     with open(path, "wb") as f:
         for chunk in r.iter_content(1024 * 1024):
             f.write(chunk)

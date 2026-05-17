@@ -5,7 +5,7 @@ Reactive marimo notebook. Point it at any directory produced by
 published MAP 2020 walking-only travel-time raster, downloaded once and
 clipped to the region's bbox.
 
-This lives in notebooks/ — not the CLI — because benchmarking is a
+This lives in notebooks/, not the CLI, because benchmarking is a
 research/validation operation, not a production primitive. The CLI's
 job is to make accessibility maps. This notebook's job is to validate
 them against the published reference.

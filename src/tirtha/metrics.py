@@ -1,6 +1,6 @@
 """Accessibility metrics.
 
-Population-weighted percentages within walking-time thresholds — the form
+Population-weighted percentages within walking-time thresholds, the form
 Weiss et al. 2020 reports in *Nature Medicine*. Spearman and MAE comparisons
 against benchmark rasters.
 """

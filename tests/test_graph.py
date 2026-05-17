@@ -1,4 +1,4 @@
-"""Tests for tirtha.graph — synthetic build + save/load round-trip."""
+"""Tests for tirtha.graph. Synthetic build and save/load round-trip."""
 from __future__ import annotations
 
 import numpy as np

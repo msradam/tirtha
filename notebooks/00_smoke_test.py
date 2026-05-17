@@ -1,4 +1,4 @@
-"""Smoke test notebook — confirms the friction package imports and marimo runs.
+"""Smoke test notebook. Confirms the tirtha package imports and marimo runs.
 
 Run with:  uv run marimo edit notebooks/00_smoke_test.py
 """
@@ -12,17 +12,17 @@ app = marimo.App(width="medium")
 @app.cell
 def _():
     import marimo as mo
-    import friction
-    return friction, mo
+    import tirtha
+    return mo, tirtha
 
 
 @app.cell
-def _(friction, mo):
+def _(mo, tirtha):
     mo.md(
         f"""
-        # friction · smoke test
+        # tirtha smoke test
 
-        Package version: **{friction.__version__}**
+        Package version: **{tirtha.__version__}**
 
         If you can see this, the environment is wired up correctly.
         """
@@ -36,7 +36,7 @@ def _(mo):
         """
         ## Next
 
-        - `notebooks/01_malawi_end_to_end.py` — the hero notebook (TBD)
+        - `notebooks/01_malawi_end_to_end.py`: the hero notebook (TBD)
         - See `docs/methodology.md` for the design
         """
     )

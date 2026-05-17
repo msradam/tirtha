@@ -4,11 +4,11 @@
 #     brew install vhs
 #     vhs demo/tirtha.tape
 #
-# Produces demo/tirtha.gif — drops cleanly into the README.
+# Produces demo/tirtha.gif. Drops cleanly into the README.
 #
-# Why Kew Gardens, Queens? It's the author's home neighborhood — small,
+# Why Kew Gardens, Queens? It is the author's home neighborhood. Small,
 # residential, every walking-time result is intuit-checkable from local
-# knowledge. Nominatim doesn't have it as a polygon, so we use --bbox.
+# knowledge. Nominatim does not have it as a polygon, so we use --bbox.
 #
 # References:
 #   https://github.com/charmbracelet/vhs
@@ -63,12 +63,12 @@ Type "  --out ./demo-out/kew-schools --no-figure --quiet"
 Enter
 Sleep 20s
 
-# 5. Side-by-side comparison — same code, different humanitarian question.
+# 5. Side-by-side comparison. Same code, different humanitarian question.
 Type "diff demo-out/kew-health/summary.txt demo-out/kew-schools/summary.txt"
 Enter
 Sleep 5s
 
-# 6. Now the graph artifact — pixels + roads + facilities as one graph.
+# 6. Now the graph artifact. Pixels + roads + facilities as one graph.
 Type "clear && tirtha graph build \"
 Enter
 Type "  --bbox '-73.835,40.700,-73.810,40.725' \"
@@ -81,7 +81,7 @@ Type "  --out demo-out/kew.graph.npz"
 Enter
 Sleep 60s
 
-# 7. Inspect the graph — one-line summary of pixel + road nodes.
+# 7. Inspect the graph. One-line summary of pixel + road nodes.
 Type "tirtha graph inspect demo-out/kew.graph.npz"
 Enter
 Sleep 4s

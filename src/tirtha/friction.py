@@ -24,7 +24,7 @@ WALK_KMH_BY_HIGHWAY_RANK: dict[int, float] = {
     6: 6.0,  # motorway
 }
 
-# OSM highway tag → integer rank used for rasterization and friction lookup
+# OSM highway tag to integer rank used for rasterization and friction lookup.
 HIGHWAY_RANK: dict[str, int] = {
     "motorway": 6,
     "trunk": 5,
@@ -48,9 +48,9 @@ def tobler_friction(slope_rad: np.ndarray, *, max_friction_min_per_m: float = 5.
 
     Args:
         slope_rad: 2D array of slope values in radians.
-        max_friction_min_per_m: Cap on friction for extreme slopes (impassable
-            terrain otherwise produces effectively-infinite cost which dominates
-            MCP outputs). Default 5 min/m ≈ 0.2 km/h.
+        max_friction_min_per_m: Cap on friction for extreme slopes. Without
+            the cap, impassable terrain produces effectively-infinite cost
+            that dominates MCP outputs. Default 5 min/m is about 0.2 km/h.
 
     Returns:
         2D float32 array of friction values in minutes per meter.
@@ -70,8 +70,8 @@ def hybrid_friction(
     """Combine off-road Tobler with on-road walking speeds.
 
     For pixels where ``road_class_rank > 0``, override Tobler with the walking
-    speed for that highway rank — but only if it's faster (so downhill off-road
-    can still win against an uphill road, which the Tobler formula allows).
+    speed for that highway rank, but only if it is faster. Downhill off-road
+    can still beat an uphill road under Tobler.
 
     Args:
         tobler_min_per_m: Tobler off-road friction.
@@ -96,12 +96,13 @@ def fm_blended_friction(
     *,
     road_walk_kmh: float = 5.5,
 ) -> np.ndarray:
-    """Foundation-model-blended friction: convex combination of off-road
-    Tobler and walking-on-road speeds, weighted by FM-predicted P(road).
+    """Foundation-model-blended friction.
 
-    Used when a TerraMind probe has produced a per-pixel probability that
-    each pixel is "road-like" (i.e. dense walkable infrastructure). Bridges
-    rule-based off-road friction with learned road detection.
+    Convex combination of off-road Tobler and walking-on-road speeds,
+    weighted by FM-predicted P(road). Used when a TerraMind probe has
+    produced a per-pixel probability that each pixel is "road-like"
+    (dense walkable infrastructure). Bridges rule-based off-road friction
+    with learned road detection.
     """
     p = np.clip(p_road, 0.0, 1.0)
     road_friction = 60.0 / (road_walk_kmh * 1000.0)

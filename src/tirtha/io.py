@@ -1,4 +1,4 @@
-"""Output writers — GeoTIFF, GeoJSON, JSON metrics."""
+"""Output writers. GeoTIFF, GeoJSON, JSON metrics."""
 from __future__ import annotations
 
 import json
@@ -83,7 +83,7 @@ def _write_raster(arr: np.ndarray, path: Path, result) -> None:
     """
     H, W = arr.shape
     minx, miny, maxx, maxy = result.bbox_wsen
-    # NOTE: this is a lon/lat-derived approximation — the actual data is in
+    # NOTE: this is a lon/lat-derived approximation. The actual data is in
     # projected UTM space. We just store the file in EPSG:4326 for portability.
     # A future iteration should preserve the projected transform from the
     # PipelineResult; for now we drop a placeholder transform and the data

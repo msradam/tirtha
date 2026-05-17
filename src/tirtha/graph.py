@@ -15,8 +15,8 @@ loadable artifact, not an implicit MCP internal. Two paradigms unified at
 The result is a single ``scipy.sparse.csr_matrix`` describing the merged
 graph, plus a node-features array recording type and coordinates. Save
 with ``save_graph(g, path)``, load with ``load_graph(path)``; downstream
-code can run any graph algorithm — Dijkstra, betweenness centrality,
-community detection — without having to reconstruct the geometry.
+code can run any graph algorithm (Dijkstra, betweenness centrality,
+community detection) without having to reconstruct the geometry.
 """
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ from pathlib import Path
 import numpy as np
 import scipy.sparse as sp
 
-# Node-type constants — kept as small ints for compact node-features arrays.
+# Node-type constants, kept as small ints for compact node-features arrays.
 NODE_PIXEL: int = 0
 NODE_ROAD: int = 1
 NODE_FACILITY: int = 2  # destination seed marker (a pixel that also has a destination)
@@ -283,10 +283,10 @@ def save_graph(g: TirthaGraph, path: str | Path) -> None:
     """Save a TirthaGraph to a single ``.npz`` archive.
 
     The output bundles:
-      - ``adj`` (sparse CSR) — adjacency matrix; flattened internally
-      - ``node_xy``, ``node_type``, ``node_friction`` — per-node attributes
-      - ``facility_node_ids`` — destination-seed indices
-      - ``meta.json`` (string) — region, CRS, affine, pixel size, shape
+      - ``adj`` (sparse CSR): adjacency matrix, flattened internally
+      - ``node_xy``, ``node_type``, ``node_friction``: per-node attributes
+      - ``facility_node_ids``: destination-seed indices
+      - ``meta.json`` (string): region, CRS, affine, pixel size, shape
     """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)

@@ -13,7 +13,7 @@ from tirtha.metrics import (
 
 
 def test_accessibility_basic_thresholds():
-    """50% of pop within 10 min, 100% within 30 min — simple synthetic check."""
+    """50% of pop within 10 min, 100% within 30 min. Simple synthetic check."""
     # 4 cells: travel times 5, 8, 15, 25 min; populations all equal to 1.
     tt = np.array([[5.0, 8.0], [15.0, 25.0]], dtype=np.float32)
     pop = np.ones_like(tt)

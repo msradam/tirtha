@@ -1,14 +1,15 @@
-"""tirtha — open humanitarian accessibility mapping.
+"""tirtha: open humanitarian accessibility mapping.
 
 A Python pipeline that estimates walking-time to nearest essential service
-(clinics, schools, water points, shelters, polling stations, …) for any
+(clinics, schools, water points, shelters, polling stations, etc.) for any
 populated region of the world. Uses only public data infrastructure:
 Sentinel-1/2 + NASADEM via Microsoft Planetary Computer, OpenStreetMap,
-WorldPop, IBM/ESA TerraMind. No paid APIs, no registration walls.
+WorldPop, and IBM/ESA TerraMind. No paid APIs, no registration walls.
 
-Tirtha is opinionated for healthcare as the flagship demo and benchmark
-(MAP 2020 from Weiss et al. is the comparator) — but the technical pipeline
-is application-general; healthcare is a configuration choice.
+Tirtha defaults to healthcare destinations because that is where the
+benchmark (Weiss et al. 2020 MAP raster) and the supervision signal
+(DHS HEALTHFACTIM) live. The technical pipeline is application-general;
+healthcare is a configuration choice.
 
 See docs/methodology.md for the design and docs/plain_english.md for the
 project explained without jargon.

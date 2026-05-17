@@ -99,8 +99,8 @@ def accessibility_run(
         "--bbox",
         "-b",
         help="Explicit bbox as 'W,S,E,N' decimal degrees. Overrides --region geocoding. "
-        "Useful for places Nominatim doesn't have as a polygon — e.g. neighborhoods, "
-        "informal settlements, custom AOIs.",
+        "Useful for places Nominatim does not have as a polygon (neighborhoods, "
+        "informal settlements, custom AOIs).",
     ),
     preset: str = typer.Option(
         "health",

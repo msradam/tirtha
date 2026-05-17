@@ -1,8 +1,8 @@
 """TerraMind foundation-model embeddings.
 
 Wraps IBM/ESA's TerraMind (via terratorch) for per-pixel friction estimation.
-Multimodal input — Sentinel-2 L2A optical + Sentinel-1 RTC SAR + NASADEM
-elevation — produces (14, 14, D) patch embeddings over 224×224 chips. A
+Multimodal input (Sentinel-2 L2A optical, Sentinel-1 RTC SAR, NASADEM
+elevation) produces (14, 14, D) patch embeddings over 224x224 chips. A
 linear probe trained in-place against the rasterized OSM road network turns
 those embeddings into per-pixel P(road), which we blend with Tobler off-road
 friction in ``tirtha.friction.fm_blended_friction``.
@@ -22,7 +22,7 @@ import numpy as np
 # terratorch.models.backbones.terramind.model.terramind_register)
 # ---------------------------------------------------------------------------
 
-# Sentinel-2 L2A — 12 bands in TerraMind order:
+# Sentinel-2 L2A: 12 bands in TerraMind order.
 #   B01 (coastal), B02 (blue), B03 (green), B04 (red),
 #   B05 / B06 / B07 (red-edge 1-3), B08 (NIR), B8A (NIR narrow),
 #   B09 (water vapor), B11 / B12 (SWIR 1-2).
@@ -41,15 +41,15 @@ S2L2A_STD = np.array(
     dtype=np.float32,
 ).reshape(12, 1, 1)
 
-# Sentinel-1 GRD/RTC — 2 bands (VV, VH) in dB after 10*log10 of linear power.
+# Sentinel-1 GRD/RTC: 2 bands (VV, VH) in dB after 10*log10 of linear power.
 S1_MEAN = np.array([-12.599, -20.293], dtype=np.float32).reshape(2, 1, 1)
 S1_STD = np.array([5.195, 5.890], dtype=np.float32).reshape(2, 1, 1)
 
-# NASADEM — 1 band (meters).
+# NASADEM: 1 band (meters).
 DEM_MEAN = np.float32(435.726)
 DEM_STD = np.float32(560.326)
 
-# TerraMind input geometry — fixed at 224×224 patches × 16 = 14×14 patch grid.
+# TerraMind input geometry: fixed at 224x224 pixels, 16x16 patches, 14x14 patch grid.
 TERRAMIND_INPUT_PX: int = 224
 TERRAMIND_PATCH_PX: int = 16
 TERRAMIND_PATCH_GRID: int = TERRAMIND_INPUT_PX // TERRAMIND_PATCH_PX  # 14
@@ -254,9 +254,9 @@ def train_road_probe_in_chip(
 ) -> np.ndarray:
     """Train an in-chip logistic regression probe and return per-patch P(road).
 
-    The probe is trained on the same patches it's then predicted on — this
-    is a "fast distillation from OSM" rather than independent generalization,
-    but it lets us exploit TerraMind's multimodal representation to identify
+    The probe is trained on the same patches it then predicts on. This is
+    a fast distillation from OSM rather than independent generalization,
+    but it lets us use TerraMind's multimodal representation to identify
     walkable-infrastructure pixels that OSM tagging may underrepresent.
 
     Args:
@@ -284,7 +284,7 @@ def train_road_probe_in_chip(
     X = emb_patches.reshape(-1, emb_patches.shape[-1])
 
     if y.sum() < 5 or y.sum() > len(y) - 5:
-        # Degenerate label distribution — fall back to label fraction directly.
+        # Degenerate label distribution. Fall back to label fraction directly.
         # (Almost-all-road or almost-no-road chips don't need a probe.)
         return patch_road_frac.astype(np.float32)
 

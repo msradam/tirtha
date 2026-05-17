@@ -98,7 +98,7 @@ def run_accessibility(
         timings[label] = time.time() - t0
         _log(f"  [{label}] {timings[label]:.1f}s")
 
-    # --- 1. Geocode region -> bbox (or use bbox_override directly) -------
+    # 1. Geocode region to bbox, or use bbox_override directly.
     t0 = time.time()
     if bbox_override is not None:
         bbox = tuple(float(x) for x in bbox_override)  # type: ignore[assignment]
@@ -109,10 +109,10 @@ def run_accessibility(
             boundary = geocode_region(region)
             bbox = tuple(float(x) for x in boundary.total_bounds)  # type: ignore[assignment]
         except TypeError as e:
-            # Nominatim didn't return a polygon — likely a point/node OSM record.
+            # Nominatim returned a non-polygon (point/node) for this query.
             raise RuntimeError(
                 f"Geocoding {region!r} did not return a polygon. Pass --bbox 'W,S,E,N' "
-                f"directly for places Nominatim doesn't have as a polygon "
+                f"directly for places Nominatim does not have as a polygon "
                 f"(neighborhoods, custom AOIs). Underlying error: {e}"
             )
     if crs is None:
@@ -121,7 +121,7 @@ def run_accessibility(
     _log(f"  CRS = {crs}")
     _time("geocode", t0)
 
-    # --- 2. NASADEM + slope + Tobler friction -----------------------------
+    # 2. NASADEM + slope + Tobler friction.
     t0 = time.time()
     _log(f"[2/6] Fetching NASADEM at {resolution_m}m + computing slope ...")
     elev_da = load_dem(bbox, crs=crs, resolution_m=resolution_m)
@@ -134,7 +134,7 @@ def run_accessibility(
     _log(f"  raster {H}x{W}, elev {elev.min():.0f}-{elev.max():.0f}m")
     _time("dem+tobler", t0)
 
-    # --- 3. OSM roads + rasterize ----------------------------------------
+    # 3. OSM roads and rasterize.
     t0 = time.time()
     _log("[3/6] Fetching OSM roads ...")
     roads = load_osm_roads(bbox, crs=crs)
@@ -147,16 +147,16 @@ def run_accessibility(
         dtype="uint8",
         all_touched=True,
     )
-    _log(f"  {len(roads)} road features → {(road_class > 0).sum():,} road pixels")
+    _log(f"  {len(roads)} road features, {(road_class > 0).sum():,} road pixels")
     _time("roads", t0)
 
-    # --- 4. Friction surface --------------------------------------------
+    # 4. Friction surface.
     t0 = time.time()
     if friction_method == "rules":
         friction = hybrid_friction(tobler, road_class)
         _log("  friction: rule-based (Tobler + walking on roads)")
     elif friction_method == "fm":
-        _log("  friction: TerraMind-blended (S2 + S1 + DEM → P(road) → blend)")
+        _log("  friction: TerraMind-blended (S2 + S1 + DEM -> P(road) -> blend)")
         from tirtha.embed import estimate_p_road_from_chip
 
         p_road = estimate_p_road_from_chip(
@@ -173,7 +173,7 @@ def run_accessibility(
         raise ValueError(f"friction_method must be 'rules' or 'fm', got {friction_method!r}")
     _time("friction", t0)
 
-    # --- 5. Destinations (facilities) + multi-source MCP -----------------
+    # 5. Destinations (facilities) and multi-source MCP.
     t0 = time.time()
     _log("[5/6] Fetching destinations + multi-source MCP ...")
     facilities = load_osm_facilities(bbox, crs=crs, tags=destination_tags)
@@ -181,7 +181,7 @@ def run_accessibility(
     _log(f"  destinations: {len(facilities)} ({len(seeds)} seeds inside chip)")
     if not seeds:
         raise RuntimeError(
-            f"No destination seeds inside the chip — check destination_tags or region scope. "
+            f"No destination seeds inside the chip. Check destination_tags or region scope. "
             f"Got {len(facilities)} OSM features but none with centroids in the raster."
         )
     travel_time = multi_source_mcp(friction, seeds, pixel_size_m=resolution_m)
@@ -191,7 +191,7 @@ def run_accessibility(
     )
     _time("mcp", t0)
 
-    # --- 6. Building density (pop proxy) + accessibility metrics ---------
+    # 6. Building density (population proxy) and accessibility metrics.
     t0 = time.time()
     _log("[6/6] Computing building density pop-proxy + accessibility ...")
     buildings = load_osm_buildings(bbox, crs=crs)
@@ -205,7 +205,7 @@ def run_accessibility(
     )
     accessibility = population_weighted_accessibility(travel_time, build_count.astype(np.float32))
     for t in accessibility.thresholds_min:
-        _log(f"  ≤ {t:3d} min  |  {accessibility.pct_within[t]:5.1f}% of built area")
+        _log(f"  <= {t:3d} min  |  {accessibility.pct_within[t]:5.1f}% of built area")
     _time("metrics", t0)
 
     timings["total_s"] = sum(timings.values())
