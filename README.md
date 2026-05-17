@@ -50,7 +50,23 @@ DEM adds 5 pts over optical-only — this is the multimodal value of TerraMind t
 
 **Uncertainty quantification (figure 14)** — *the open lane no other healthcare-accessibility work currently provides*: B=200 bootstrap probes over the TerraMind S2+S1+DEM embeddings → P(road) ± σ per patch → K=40 perturbed friction surfaces → ensemble MCP → per-pixel mean, std, and 95% CI on travel time. Population-weighted mean 95% CI width: 0.22 min. MAP 2020 has no uncertainty layer; AccessMod has no uncertainty layer; tirtha does.
 
-See [`docs/figures/`](docs/figures/) for all 20 headline visualizations — including figure 17 (Tirtha vs Wu vs MAP four-way head-to-head), figure 19 (split-conformal CQR brings empirical 95% coverage to 94.9%), and figure 20 (Cox's Bazar transfer demonstration — see below).
+See [`docs/figures/`](docs/figures/) for all 21 headline visualizations — including figure 17 (Tirtha vs Wu vs MAP four-way head-to-head), figure 19 (split-conformal CQR brings empirical 95% coverage to 94.9%), figure 20 (Cox's Bazar transfer demonstration — see below), and figure 21 (Sierra Leone national-scale).
+
+### National-scale — Sierra Leone (figure 21)
+
+First end-to-end run beyond a toy chip: all of Sierra Leone, ~13M pixels at 100m resolution, 571 OSM-tagged healthcare facilities, 6.77M people via WorldPop UN-adjusted 2020. Multi-source MCP from all facility seeds in **4 seconds**. Compared against MAP 2020 over the same extent:
+
+| Threshold | Tirtha-NAT | MAP 2020 |
+|---|---|---|
+| ≤ 15 min | 32.5% | 54.9% |
+| ≤ 30 min | 41.5% | 69.7% |
+| ≤ 60 min | 50.1% | 90.0% |
+| ≤ 120 min | 63.1% | 98.7% |
+| ≤ 180 min | 74.4% | 99.8% |
+
+**Headline: Tirtha-NAT estimates that 25.6% of Sierra Leone's population — 1.71 million people — is more than 3 hours walking from any healthcare facility. MAP 2020 estimates 0.2%.** The discrepancy concentrates in the mountainous east and rural inland districts.
+
+Honest caveats (both directions): 571 OSM facilities likely under-counts what MAP used (Sierra Leone MoHS lists ~1,200 facilities) → some Tirtha "unreachable" areas may have unmapped clinics. Conversely, MAP's 925m resolution smooths over real isolation in narrow valleys. The truth is between the two estimates — but Tirtha's number is the kind of result that would prompt a Ministry of Health investigation.
 
 ### Transfer demonstration — Cox's Bazar refugee camp (figure 20)
 
