@@ -11,7 +11,6 @@ for healthcare destinations; pass ``--destinations`` to override.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 import typer
 
@@ -95,7 +94,7 @@ def accessibility_run(
         help="Region name to geocode (e.g. 'Brownsville, Brooklyn'). "
         "Falls back to --bbox if Nominatim has no polygon for the name.",
     ),
-    bbox: Optional[str] = typer.Option(
+    bbox: str | None = typer.Option(
         None,
         "--bbox",
         "-b",
@@ -109,7 +108,7 @@ def accessibility_run(
         "-p",
         help="Destination preset: health | schools | water | shelter.",
     ),
-    destinations: Optional[str] = typer.Option(
+    destinations: str | None = typer.Option(
         None,
         "--destinations",
         "-d",
@@ -119,7 +118,7 @@ def accessibility_run(
     resolution_m: int = typer.Option(
         10, "--resolution", "-R", min=10, max=300, help="Raster resolution in meters."
     ),
-    crs: Optional[str] = typer.Option(
+    crs: str | None = typer.Option(
         None, "--crs", help="Target CRS (auto-picks UTM zone if not given)."
     ),
     friction_method: str = typer.Option(
@@ -202,7 +201,7 @@ def accessibility_run(
 @graph_app.command("build")
 def graph_build(
     region: str = typer.Option("", "--region", "-r", help="Region to build the graph for."),
-    bbox: Optional[str] = typer.Option(
+    bbox: str | None = typer.Option(
         None,
         "--bbox",
         "-b",
@@ -214,14 +213,14 @@ def graph_build(
         "-p",
         help="Destination preset (facilities marked as NODE_FACILITY seeds).",
     ),
-    destinations: Optional[str] = typer.Option(
+    destinations: str | None = typer.Option(
         None,
         "--destinations",
         "-d",
         help="Explicit OSM tag spec; overrides --preset.",
     ),
     resolution_m: int = typer.Option(30, "--resolution", "-R", min=10, max=300),
-    crs: Optional[str] = typer.Option(None, "--crs"),
+    crs: str | None = typer.Option(None, "--crs"),
     out: Path = typer.Option(
         Path("./graph.npz"),
         "--out",

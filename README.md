@@ -1,5 +1,9 @@
 # tirtha
 
+[![tests](https://github.com/msradam/geospatial-routing-api/actions/workflows/test.yml/badge.svg)](https://github.com/msradam/geospatial-routing-api/actions/workflows/test.yml)
+[![python](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![license](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
+
 > Open, reproducible travel-time-to-healthcare mapping — pairing IBM/ESA's **TerraMind** foundation model with classical road-graph routing to estimate physical access to health facilities, benchmarked against the Malaria Atlas Project's 2020 raster.
 
 **The name** — *tirtha* (तीर्थ) is Sanskrit for "crossing place" — a ford in a river where you can safely cross, also a place of pilgrimage where people travel for healing. This project maps every person's distance from the nearest tirtha.

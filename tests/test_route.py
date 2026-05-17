@@ -54,8 +54,8 @@ def test_mcp_empty_seeds_raises():
 
 def test_seeds_from_geometries_filters_outside_chip():
     """Geometries outside the raster bounds should be silently dropped."""
-    from shapely.geometry import Point
     from affine import Affine
+    from shapely.geometry import Point
 
     affine = Affine.translation(0, 100) * Affine.scale(10.0, -10.0)
     shape = (10, 10)

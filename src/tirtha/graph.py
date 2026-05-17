@@ -27,7 +27,6 @@ from pathlib import Path
 import numpy as np
 import scipy.sparse as sp
 
-
 # Node-type constants — kept as small ints for compact node-features arrays.
 NODE_PIXEL: int = 0
 NODE_ROAD: int = 1

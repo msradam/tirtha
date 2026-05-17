@@ -7,7 +7,7 @@ pixel-grid IS a valid road graph at 10–100m resolution with dense OSM coverage
 """
 from __future__ import annotations
 
-from typing import Iterable
+from collections.abc import Iterable
 
 import numpy as np
 from skimage.graph import MCP_Geometric

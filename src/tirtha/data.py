@@ -9,11 +9,8 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
-from typing import Iterable
 
-import numpy as np
 import requests
-
 
 # ---------------------------------------------------------------------------
 # Sentinel-2 / Sentinel-1 / NASADEM via Microsoft Planetary Computer
@@ -40,8 +37,8 @@ def load_dem(
 
     Returns an ``xarray.DataArray`` of elevation in meters.
     """
-    from odc.stac import load
     import odc.geo.xr  # noqa: F401 — registers .odc accessor
+    from odc.stac import load
 
     catalog = _pc_catalog()
     items = list(catalog.search(collections=["nasadem"], bbox=bbox).items())
@@ -64,8 +61,8 @@ def load_sentinel2_rgb(
 
     Returns the xarray Dataset with B02/B03/B04 bands.
     """
-    from odc.stac import load
     import odc.geo.xr  # noqa: F401
+    from odc.stac import load
 
     catalog = _pc_catalog()
     items = sorted(

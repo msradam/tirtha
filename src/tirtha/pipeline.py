@@ -6,10 +6,8 @@ MCP, and reports population-weighted accessibility metrics for the region.
 """
 from __future__ import annotations
 
-import os
 import time
 from dataclasses import dataclass, field
-from typing import Iterable
 
 import numpy as np
 import xrspatial

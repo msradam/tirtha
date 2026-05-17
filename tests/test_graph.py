@@ -1,15 +1,10 @@
 """Tests for tirtha.graph — synthetic build + save/load round-trip."""
 from __future__ import annotations
 
-import tempfile
-from pathlib import Path
-
 import numpy as np
 
 from tirtha.graph import (
     NODE_FACILITY,
-    NODE_PIXEL,
-    NODE_ROAD,
     build_graph,
     load_graph,
     save_graph,

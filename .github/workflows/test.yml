@@ -1,0 +1,54 @@
+name: tests
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install dependencies (no ML extras — tests don't need them)
+        run: uv sync --extra dev --frozen
+
+      - name: Run pytest
+        run: uv run pytest -v --tb=short
+
+      - name: Show test summary
+        if: always()
+        run: echo "tests completed; see job output above"
+
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install dev tools
+        run: uv sync --extra dev --frozen
+
+      - name: Ruff check
+        run: uv run ruff check src/ tests/
+        continue-on-error: true  # lint warnings don't fail the build yet
+
+      - name: Ruff format check
+        run: uv run ruff format --check src/ tests/
+        continue-on-error: true

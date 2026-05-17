@@ -32,7 +32,7 @@ def write_outputs(result, out_dir: Path) -> None:
     facilities = result.facilities_proj
     try:
         facilities.to_file(out_dir / "facilities.geojson", driver="GeoJSON")
-    except Exception as e:  # GeoJSON requires lon/lat
+    except Exception:  # GeoJSON requires lon/lat
         try:
             facilities.to_crs("EPSG:4326").to_file(
                 out_dir / "facilities.geojson", driver="GeoJSON"

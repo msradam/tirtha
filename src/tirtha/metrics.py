@@ -11,7 +11,6 @@ from dataclasses import dataclass
 import numpy as np
 from scipy.stats import spearmanr
 
-
 # Standard Weiss-bin thresholds (minutes). Keep this list aligned with the
 # methodology paper figure conventions.
 DEFAULT_THRESHOLDS_MIN: tuple[int, ...] = (5, 10, 15, 30, 60, 120, 180)

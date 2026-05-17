@@ -12,11 +12,10 @@ Requires the ``[ml]`` extra (torch + terratorch + huggingface_hub).
 """
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable
 
 import numpy as np
-
 
 # ---------------------------------------------------------------------------
 # TerraMind v1 pretraining stats (sourced from
@@ -64,8 +63,8 @@ TERRAMIND_PATCH_GRID: int = TERRAMIND_INPUT_PX // TERRAMIND_PATCH_PX  # 14
 def _require_ml_extras() -> None:
     """Raise a helpful error if the [ml] extra is not installed."""
     try:
-        import torch  # noqa: F401
         import terratorch  # noqa: F401
+        import torch  # noqa: F401
     except ImportError as e:
         raise ImportError(
             "TerraMind support requires the [ml] extra. Install with:\n"
@@ -105,10 +104,10 @@ def fetch_multimodal_chip(
     224×224 in pixel space; raises if the bbox at the given resolution doesn't
     reach 224×224 (TerraMind requires the fixed input size).
     """
-    from odc.stac import load
     import odc.geo.xr  # noqa: F401
     import planetary_computer
     import pystac_client
+    from odc.stac import load
 
     catalog = pystac_client.Client.open(
         "https://planetarycomputer.microsoft.com/api/stac/v1",
@@ -207,8 +206,8 @@ def load_terramind(
     First call downloads weights from HuggingFace (~80 MB for ``small``).
     """
     _require_ml_extras()
-    from terratorch import BACKBONE_REGISTRY
     import torch
+    from terratorch import BACKBONE_REGISTRY
 
     model = BACKBONE_REGISTRY.build(
         variant,

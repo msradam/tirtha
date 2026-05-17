@@ -5,8 +5,8 @@ import numpy as np
 import pytest
 
 from tirtha.metrics import (
-    AccessibilityResult,
     DEFAULT_THRESHOLDS_MIN,
+    AccessibilityResult,
     compare_rasters,
     population_weighted_accessibility,
 )
