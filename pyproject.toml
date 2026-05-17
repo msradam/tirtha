@@ -36,6 +36,7 @@ dependencies = [
     "xarray>=2026.4.0",
     "odc-geo>=0.5.1",
     "odc-stac>=0.5.2",
+    "xarray-spatial>=0.9.9",
 ]
 
 [project.optional-dependencies]
