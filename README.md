@@ -91,6 +91,22 @@ tirtha
 
 A short terminal recording of the demo is in [`demo/`](demo/) — see `demo/README.md` to reproduce with [vhs](https://github.com/charmbracelet/vhs).
 
+### Benchmarking vs MAP 2020
+
+Validation isn't a CLI primitive — it's a research operation. There's a marimo
+notebook at [`notebooks/02_bench_vs_map.py`](notebooks/02_bench_vs_map.py) that
+takes any directory produced by `tirtha accessibility run`, downloads + clips
+the MAP 2020 walking-only raster, and reports head-to-head Spearman ρ, MAE,
+and Weiss-bin accessibility numbers — plus a three-panel comparison figure.
+
+```bash
+uv run tirtha accessibility run --region "Blantyre, Malawi" --out ./blantyre
+uv run marimo edit notebooks/02_bench_vs_map.py    # edit TIRTHA_OUT_DIR, re-run
+```
+
+The CLI makes accessibility maps; this notebook validates them against the
+published reference. Different jobs, different shapes.
+
 ### Tests
 
 ```bash
