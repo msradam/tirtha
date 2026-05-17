@@ -1,0 +1,1 @@
+"""friction.eval — placeholder."""

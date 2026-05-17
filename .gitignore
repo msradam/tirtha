@@ -1,4 +1,43 @@
-__pycache__
+# Python
+__pycache__/
 *.pyc
-db.sqlite3
+*.pyo
+*.pyd
+*.egg-info/
+build/
+dist/
+
+# uv / venv
+.venv/
+.python-version
+
+# Editor
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Pipeline outputs (big, regeneratable)
+output/
+data/cache/
+*.tif
+*.tiff
+*.geojson
+!docs/**/*.geojson
+
+# Secrets
+.env
+.env.local
 .secretkey
+
+# Notebook artifacts
+.ipynb_checkpoints/
+.marimo.toml
+
+# Test / lint cache
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Legacy
+db.sqlite3
