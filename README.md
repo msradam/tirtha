@@ -28,9 +28,10 @@ Spearman ρ matrix (all three methods agree internally at ρ > 0.98; all differ 
 | T-FM | | | 1.000 | **0.662** |
 | MAP | | | | 1.000 |
 
-Tirtha additionally provides **per-pixel uncertainty bounds** (figure 14, B=200 bootstrap × K=40 friction ensemble). Wu 2025 and MAP 2020 have none.
+Tirtha additionally provides **calibrated per-pixel uncertainty bounds** (figures 14, 19). Wu 2025 and MAP 2020 have none.
 
-**Calibration caveat (honest)** — figure 18 documents that tirtha's current CIs are *severely under-calibrated* against MAP 2020 as a proxy reference: ECE = 0.485, empirical 95% coverage = 3%. The bootstrap-over-196-patches methodology produces over-confident intervals. Path to calibrated UQ: TerraMind fine-tune with DHS supervision (adds epistemic variation) + deep ensembles or conformal calibration against held-out DHS clusters. This is the principled post-hoc fix. Until then: tirtha provides *uncertainty bounds*, not *calibrated uncertainty bounds*. The distinction matters for the methodology paper.
+- The naive ensemble (B=200 bootstrap × K=40 friction samples) is severely over-confident — ECE 0.484 against MAP 2020, empirical 95% coverage = 3.2% (figure 18, honestly documented).
+- **Split-conformal quantile regression** (figure 19) brings empirical 95% coverage to **94.9%** — within 0.1 pp of nominal. ECE drops 177× to 0.003. The honest 95% CI half-width is **±6 min**, not the wildly over-confident ±0.1 min of the naive ensemble. Conformal calibration is against MAP 2020 as proxy reference; DHS supervision in v1 will recalibrate against human-reported travel times.
 
 TerraMind multimodal ablation (zero-shot road-presence linear probe, 5-fold CV ROC-AUC):
 
@@ -49,7 +50,7 @@ DEM adds 5 pts over optical-only — this is the multimodal value of TerraMind t
 
 **Uncertainty quantification (figure 14)** — *the open lane no other healthcare-accessibility work currently provides*: B=200 bootstrap probes over the TerraMind S2+S1+DEM embeddings → P(road) ± σ per patch → K=40 perturbed friction surfaces → ensemble MCP → per-pixel mean, std, and 95% CI on travel time. Population-weighted mean 95% CI width: 0.22 min. MAP 2020 has no uncertainty layer; AccessMod has no uncertainty layer; tirtha does.
 
-See [`docs/figures/`](docs/figures/) for all 18 headline visualizations — including figure 17 (Tirtha vs Wu vs MAP four-way head-to-head) and figure 18 (calibration limitation, honestly documented).
+See [`docs/figures/`](docs/figures/) for all 19 headline visualizations — including figure 17 (Tirtha vs Wu vs MAP four-way head-to-head), figure 18 (naive uncertainty miscalibration), and figure 19 (split-conformal CQR brings empirical 95% coverage to 94.9%).
 
 ---
 
