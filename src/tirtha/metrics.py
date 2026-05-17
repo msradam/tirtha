@@ -62,18 +62,31 @@ def compare_rasters(
     b: np.ndarray,
     label_a: str = "a",
     label_b: str = "b",
+    *,
+    min_valid_pixels: int = 10,
 ) -> dict:
-    """Per-pixel Spearman rho, Pearson r, MAE between two rasters."""
+    """Per-pixel Spearman rho + MAE + bias between two rasters.
+
+    Always returns a dict with the same keys; rho is ``None`` when there are
+    fewer than ``min_valid_pixels`` valid (finite, non-NaN) pixels.
+    """
     valid = np.isfinite(a) & np.isfinite(b)
-    if valid.sum() < 100:
-        return {"valid_pixels": int(valid.sum()), "rho": None, "mae": None}
-    rho, _ = spearmanr(a[valid].flatten(), b[valid].flatten())
-    diff = a[valid] - b[valid]
-    return {
-        "valid_pixels": int(valid.sum()),
-        "spearman_rho": float(rho),
-        "mae_min": float(np.abs(diff).mean()),
-        "bias_min": float(diff.mean()),
+    n = int(valid.sum())
+    result: dict = {
+        "valid_pixels": n,
+        "spearman_rho": None,
+        "mae_min": None,
+        "bias_min": None,
         "label_a": label_a,
         "label_b": label_b,
     }
+    if n < min_valid_pixels:
+        return result
+    a_v = a[valid].flatten()
+    b_v = b[valid].flatten()
+    rho, _ = spearmanr(a_v, b_v)
+    diff = a_v - b_v
+    result["spearman_rho"] = float(rho) if np.isfinite(rho) else None
+    result["mae_min"] = float(np.abs(diff).mean())
+    result["bias_min"] = float(diff.mean())
+    return result

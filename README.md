@@ -87,6 +87,18 @@ tirtha
 
 A short terminal recording of the demo is in [`demo/`](demo/) — see `demo/README.md` to reproduce with [vhs](https://github.com/charmbracelet/vhs).
 
+### Tests
+
+```bash
+uv sync --extra dev      # installs pytest, ruff
+uv run pytest            # 29 tests; <2s
+```
+
+Covers the Tobler hiking function math, hybrid friction overrides, MCP routing
+on synthetic rasters, accessibility metrics, raster-comparison math, and the
+graph build/save/load round-trip. No network, no GPU, no foundation-model
+inference — pure unit tests.
+
 ## Headline result (v0 toy, Blantyre chip) — three-way head-to-head
 
 Population-weighted accessibility (WorldPop UN-adjusted, walking-only, Blantyre 2.58km chip):
