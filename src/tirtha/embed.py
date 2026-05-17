@@ -1,11 +1,16 @@
 """TerraMind foundation-model embeddings.
 
-Wraps IBM/ESA's TerraMind (via terratorch) for per-pixel friction estimation.
-Multimodal input (Sentinel-2 L2A optical, Sentinel-1 RTC SAR, NASADEM
-elevation) produces (14, 14, D) patch embeddings over 224x224 chips. A
-linear probe trained in-place against the rasterized OSM road network turns
-those embeddings into per-pixel P(road), which we blend with Tobler off-road
-friction in ``tirtha.friction.fm_blended_friction``.
+Wraps IBM/ESA's TerraMind (Jakubik et al. 2025; arXiv:2504.11171) via
+terratorch for per-pixel friction estimation. Multimodal input (Sentinel-2
+L2A optical, Sentinel-1 RTC SAR, NASADEM elevation) produces (14, 14, D)
+patch embeddings over 224x224 chips. A linear probe trained in-place
+against the rasterized OSM road network turns those embeddings into
+per-pixel P(road), which we blend with Tobler off-road friction in
+``tirtha.friction.fm_blended_friction``.
+
+The "FM-as-frozen-friction-extractor" pattern is a Tirtha-original
+design choice; see ``docs/methodology.md`` for rationale and
+``docs/references.md`` for the TerraMind paper citation.
 
 This is the "FM-supervised friction" path described in docs/methodology.md.
 Requires the ``[ml]`` extra (torch + terratorch + huggingface_hub).

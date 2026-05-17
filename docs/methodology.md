@@ -139,6 +139,62 @@ A difference map (ours minus MAP) is the most useful single visualization, it sh
 - [ ] Decide isotropic vs anisotropic default for v1.
 - [ ] Decide whether to publish the fine-tuned head weights (HF? in-repo? both?).
 
+## Related work
+
+Tirtha sits in a literature with both healthcare-specific neighbors and
+broader satellite-imagery-to-graph neighbors. The full bibliography is at
+[`docs/references.md`](references.md). Key relationships:
+
+- **Friction-surface accessibility**: Weiss et al. (2018, 2020) established
+  the canonical methodology with hand-engineered rules over land cover.
+  Wu et al. (2025, *Nature Communications*) extended to 30m global at
+  six infrastructure categories, still rule-based. Tirtha replaces the
+  rule-based component with a foundation-model-derived friction surface.
+- **On/off-road fusion**: Ray & Ebener (2008) introduced this in
+  AccessMod. Tirtha extends their methodology by substituting an
+  FM-derived off-road surface for the rule-based one.
+- **Satellite-imagery-to-graph for navigation**: OVerSeeC (Rana et al.,
+  2026, RSS-ROAR) is the closest concurrent published work. They use
+  SAM + Gemma-2-27B + Qwen2.5-Coder-14B on satellite imagery to produce
+  off-road robot navigation costmaps. Different domain (ground robots),
+  different compute envelope (GPU-cluster), different output (raster
+  costmap, not a unified pixel+road graph). Tirtha's open-source +
+  laptop-tier + EO-native FM positioning does not overlap.
+- **Earlier graph-from-imagery work**: URA* (Pal et al. 2023), Tile2Net
+  (VIDA-NYU 2023), and CRESI (Van Etten 2018) each have pieces of the
+  pattern (CNN-based traversability, sidewalk graphs, road graphs from
+  satellite) but predate the foundation-model era and do not fuse pixel
+  and road networks as a single sparse adjacency.
+- **Foundation models for Earth observation**: TerraMind (Jakubik et al.
+  2025) is the open-weight multimodal generative FM that Tirtha uses.
+  Prithvi-EO-2.0 (Szwarcman et al. 2024) is an alternative open-weight
+  candidate not currently exercised in Tirtha; cross-FM validation is
+  on the roadmap.
+- **Conformal calibration**: Vovk et al. (2005) established conformal
+  prediction; Romano et al. (2019) introduced the conformalized quantile
+  regression (CQR) variant used in Tirtha's calibration. Angelopoulos
+  & Bates (2023) is a useful tutorial reference.
+
+## What Tirtha invents
+
+Four design choices are not in any cited prior work. They are documented
+explicitly so reviewers can see the boundary between applied and novel
+contributions:
+
+1. **FM-as-frozen-friction-extractor.** Using TerraMind as a frozen
+   feature extractor whose embeddings are mapped to per-pixel friction
+   via an in-chip logistic regression probe trained against rasterized
+   OSM road labels.
+2. **Linear friction blending** between rule-based off-road Tobler and
+   walking-on-road speeds: `friction = (1 - P) * Tobler + P * road_walk`.
+3. **Unified pixel-plus-road sparse adjacency** as a loadable artifact.
+   AccessMod has the fusion idea conceptually; Tirtha exposes it as a
+   `scipy.sparse.csr_matrix` plus per-node attributes.
+4. **Conformal calibration of MCP outputs.** Conformal prediction is
+   well-studied for regression; applying it to accessibility maps with
+   marginal coverage guarantees over the travel-time raster is, to our
+   knowledge, novel.
+
 ---
 
 *This document is a design commitment, not a finished plan. It will be edited as the implementation forces clarifications.*

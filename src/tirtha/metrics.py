@@ -1,8 +1,17 @@
 """Accessibility metrics.
 
 Population-weighted percentages within walking-time thresholds, the form
-Weiss et al. 2020 reports in *Nature Medicine*. Spearman and MAE comparisons
-against benchmark rasters.
+Weiss et al. (2020) reports in *Nature Medicine*. The intellectual lineage
+of accessibility-as-percent-within-threshold goes back to Hansen (1959) on
+gravity-based accessibility and Penchansky & Thomas (1981) on the five
+dimensions of access. Tirtha measures the physical/temporal dimension only;
+quality, insurance, continuity, and trust gaps are out of scope and we say
+so explicitly in ``docs/methodology.md``.
+
+Spearman and MAE raster comparisons follow standard nonparametric statistics
+practice. The reporting bins (30, 60, 120, 180 min) match Weiss et al. (2020).
+
+See ``docs/references.md`` for full citations.
 """
 from __future__ import annotations
 

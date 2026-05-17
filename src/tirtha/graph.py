@@ -1,8 +1,13 @@
 """The polyglot graph artifact.
 
 A first-class graph object that exposes "the image is a graph" as a real
-loadable artifact, not an implicit MCP internal. Two paradigms unified at
-``(x, y)`` coordinates:
+loadable artifact, not an implicit routing internal. The fusion methodology
+(on-road graph stitched to off-road raster) follows Ray & Ebener (2008) on
+AccessMod; the contribution here is exposing it as a single loadable
+``scipy.sparse.csr_matrix`` plus per-node attributes, so downstream code
+can run any graph algorithm without rebuilding the geometry.
+
+Two paradigms unified at ``(x, y)`` coordinates:
 
   - **Pixel nodes**: one per friction-raster cell, attribute = friction.
     Adjacency = 8-connected, weight = avg(friction) * pixel_distance.

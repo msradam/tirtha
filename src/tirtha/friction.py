@@ -1,12 +1,20 @@
 """Friction-surface construction.
 
-Tobler's hiking function for slope-aware walking cost, plus hybrid friction
-that applies walking-on-roads speeds where OSM road pixels exist. Walking-
-only convention throughout for comparability with Weiss et al. 2020 MAP.
+Tobler's hiking function (Tobler 1993) for slope-aware walking cost, plus
+hybrid friction that applies walking-on-roads speeds where OSM road pixels
+exist. Walking-only convention throughout for comparability with Weiss
+et al. (2020) MAP. Walking speeds on roads (5.0 to 6.0 km/h by highway
+class) are within the empirical range reported by Knoblauch et al. (1996)
+and Bohannon (1997) for comfortable adult pedestrian speeds.
 
-Math (Tobler 1993):
+The Tobler equation:
     v_kmh = 6 * exp(-3.5 * |tan(slope_rad) + 0.05|)
     friction_min_per_m = 60 / (v_kmh * 1000)
+
+The FM-blended variant (``fm_blended_friction``) is a Tirtha-original linear
+interpolation between off-road Tobler and on-road walking speeds, weighted
+by a foundation-model-predicted P(road). See ``docs/methodology.md`` for
+the rationale and ``docs/references.md`` for full citations.
 """
 from __future__ import annotations
 
