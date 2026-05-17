@@ -1,1 +1,0 @@
-"""friction.data — placeholder."""

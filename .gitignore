@@ -20,7 +20,9 @@ dist/
 # Pipeline outputs (big, regeneratable)
 output/
 data/cache/
-cache/                # OSMnx Overpass response cache
+# OSMnx Overpass response cache
+cache/
+cache_osmnx/
 *.tif
 *.tiff
 *.geojson

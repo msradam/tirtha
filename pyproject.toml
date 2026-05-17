@@ -1,7 +1,7 @@
 [project]
-name = "friction"
+name = "tirtha"
 version = "0.1.0"
-description = "Open, reproducible travel-time-to-healthcare mapping via TerraMind friction estimation + OSMnx road-graph fusion."
+description = "Open humanitarian accessibility mapping. Walking-time-to-nearest-essential-service via foundation-model-aware friction + OSMnx road graph + multi-source MCP. Healthcare flagship, framework-general."
 authors = [
     { name = "Adam Munawar Rahman", email = "msrahmanadam@gmail.com" }
 ]
@@ -52,7 +52,7 @@ dev = [
 ]
 
 [project.scripts]
-friction = "friction.cli:app"
+tirtha = "tirtha.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.11.14,<0.12.0"]

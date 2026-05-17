@@ -4,7 +4,43 @@
 
 **The name** — *tirtha* (तीर्थ) is Sanskrit for "crossing place" — a ford in a river where you can safely cross, also a place of pilgrimage where people travel for healing. This project maps every person's distance from the nearest tirtha.
 
-**Status:** 🚧 v0 toy proof-of-concept working end-to-end on a 2.5 km × 2.5 km chip in Blantyre, Malawi. Country-scale v1 is the next milestone. See [`docs/methodology.md`](docs/methodology.md) for technical design, [`docs/plain_english.md`](docs/plain_english.md) for the project explained without jargon, and the [archive branch](https://github.com/msradam/geospatial-routing-api/tree/archive/django-api) for the 2019 implementation this transforms.
+**Status:** 🚧 v0.1 — pipeline working end-to-end, Typer CLI, demonstrated on Blantyre / Cox's Bazar / Sierra Leone (national-scale) / Brownsville Brooklyn. See [`docs/methodology.md`](docs/methodology.md) for technical design, [`docs/plain_english.md`](docs/plain_english.md) for the project explained without jargon, and the [archive branch](https://github.com/msradam/geospatial-routing-api/tree/archive/django-api) for the 2019 implementation this transforms.
+
+## Quickstart
+
+```bash
+git clone https://github.com/msradam/geospatial-routing-api.git tirtha
+cd tirtha
+uv sync                       # installs deps; ~3 GB Python ML stack on first run
+
+# Run the pipeline on any geocodable region.
+uv run tirtha accessibility run --region "Brownsville, Brooklyn" --out ./out
+
+# Same pipeline, different humanitarian application:
+uv run tirtha accessibility run --region "Sierra Leone" --preset schools --resolution 100 --out ./sl-schools
+uv run tirtha accessibility run --region "Cox's Bazar" --preset shelter --out ./bgd-shelter
+```
+
+Outputs (in `--out`):
+
+- `travel_time.tif` — walking-time-to-nearest-destination raster (minutes)
+- `friction.tif` — input friction surface (min/m)
+- `facilities.geojson` — OSM destinations actually used
+- `metrics.json` — population-weighted accessibility numbers
+- `summary.txt` — human-readable summary
+- `figures/headline.png` — four-panel headline figure
+
+CLI surface:
+
+```
+tirtha
+├── version              # tirtha version
+├── cache-info           # show cache contents + total size
+└── accessibility
+    └── run              # the pipeline
+```
+
+A short terminal recording of the demo is in [`demo/`](demo/) — see `demo/README.md` to reproduce.
 
 ## Headline result (v0 toy, Blantyre chip) — three-way head-to-head
 
