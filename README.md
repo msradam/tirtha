@@ -50,7 +50,22 @@ DEM adds 5 pts over optical-only — this is the multimodal value of TerraMind t
 
 **Uncertainty quantification (figure 14)** — *the open lane no other healthcare-accessibility work currently provides*: B=200 bootstrap probes over the TerraMind S2+S1+DEM embeddings → P(road) ± σ per patch → K=40 perturbed friction surfaces → ensemble MCP → per-pixel mean, std, and 95% CI on travel time. Population-weighted mean 95% CI width: 0.22 min. MAP 2020 has no uncertainty layer; AccessMod has no uncertainty layer; tirtha does.
 
-See [`docs/figures/`](docs/figures/) for all 21 headline visualizations — including figure 17 (Tirtha vs Wu vs MAP four-way head-to-head), figure 19 (split-conformal CQR brings empirical 95% coverage to 94.9%), figure 20 (Cox's Bazar transfer demonstration — see below), and figure 21 (Sierra Leone national-scale).
+See [`docs/figures/`](docs/figures/) for all 22 headline visualizations — including figure 17 (Tirtha vs Wu vs MAP four-way head-to-head), figure 19 (split-conformal CQR brings empirical 95% coverage to 94.9%), figure 20 (Cox's Bazar transfer demonstration), figure 21 (Sierra Leone national-scale), and figure 22 (Brownsville, Brooklyn urban application).
+
+### Urban application — Brownsville, Brooklyn (figure 22)
+
+Same pipeline pointed at a dense NYC neighborhood. 3.4 × 4.4 km at 10m resolution. 17 healthcare facilities (5 pharmacies, 5 clinics, 3 doctors, 2 hospitals), 47 schools, 26,202 buildings, 70 subway features. MCP solves in 0.1 seconds.
+
+| Walking time | % built area · healthcare | % built area · schools |
+|---|---|---|
+| ≤ 5 min | 34.7% | 79.4% |
+| ≤ 10 min | 71.6% | 99.6% |
+| ≤ 15 min | 90.1% | 100% |
+| ≤ 30 min | 100% | 100% |
+
+**Schools are ~2× as accessible as healthcare in Brownsville** (mean 4.6 min vs 8.5 min). NYC has aggressively-distributed school infrastructure; healthcare consolidated into fewer larger facilities, producing 25-minute walking maxima in central Brooklyn for actual clinic access.
+
+Honest methodology note: walking-only is artificially pessimistic for NYC (the L, 3, and C trains serve this area). But the *spatial pattern* matches what's documented — Brownsville's healthcare disparities aren't primarily distance-based; they're quality of care, insurance, continuity, and trust. Tirtha shows the structural baseline.
 
 ### National-scale — Sierra Leone (figure 21)
 
