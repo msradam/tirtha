@@ -7,11 +7,43 @@ healthcare computations). That implementation is preserved on the
 branch at tag `v1-unicef-2019-archive` and is no longer part of the active
 codebase.
 
-The version numbers below track the in-session iterations that built tirtha
-from scratch on May 16-17, 2026. Tirtha has not been formally released to PyPI;
-these versions are commit-tagged in the git history.
+The development version numbers (v0.1 through v0.6) track in-session
+iterations during the May 16-17, 2026 build. The first PyPI-shaped release
+is v0.1.0, which bundles the contents of all six iterations.
 
-## v0.6 (2026-05-17): bench-vs-MAP marimo notebook
+## v0.1.0 (2026-05-17): first PyPI release
+
+Consolidates the development iterations v0.1 through v0.6 into a single
+released artifact. What ships:
+
+- Python package `tirtha` (Apache 2.0, requires Python 3.12+)
+- CLI: `tirtha accessibility run`, `tirtha graph build`, `tirtha graph inspect`,
+  `tirtha cache-info`, `tirtha version`
+- Pipeline: STAC + OSMnx + WorldPop + MAP raster loaders, Tobler friction,
+  hybrid friction with road overrides, FM-blended friction via TerraMind-Small
+  (optional `[ml]` extra), multi-source MCP from facility seeds, calibrated
+  uncertainty via split-conformal CQR
+- Graph artifact: unified pixel + OSM-road sparse adjacency, saved as `.npz`,
+  loadable in three lines for any graph algorithm
+- 10-country showcase pre-computed at 100m resolution: Sierra Leone, Malawi,
+  Burkina Faso, Liberia, Rwanda, Madagascar, Nepal, Haiti, Ethiopia,
+  Bangladesh. Browsable via the marimo WASM site (deployed on GitHub Pages)
+- 29-test pytest suite; GitHub Actions CI for tests and lint
+- vhs demo tape, plain-English explainer, methodology doc, 22 committed figures
+
+Validation numbers (Blantyre 2.58 km chip):
+
+- Per-pixel agreement vs MAP 2020: Spearman rho 0.674, MAE 2.89 min
+- Population-weighted accessibility within 10 min: tirtha-FM 68.4%, MAP 67.1%
+- Calibration: empirical 95% coverage 94.9% after split-conformal CQR
+- TerraMind ablation: S2+S1+DEM ROC-AUC 0.748, S2 alone 0.712
+
+## Development iterations
+
+The sub-headings below document the order in which v0.1.0's contents were
+built. Each is commit-tagged in the git history.
+
+### v0.6 (development): bench-vs-MAP marimo notebook
 
 - `notebooks/02_bench_vs_map.py`: reactive marimo notebook for benchmarking
   any `tirtha accessibility run` output against the Weiss et al. 2020 MAP
