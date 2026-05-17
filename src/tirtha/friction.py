@@ -11,10 +11,13 @@ The Tobler equation:
     v_kmh = 6 * exp(-3.5 * |tan(slope_rad) + 0.05|)
     friction_min_per_m = 60 / (v_kmh * 1000)
 
-The FM-blended variant (``fm_blended_friction``) is a Tirtha-original linear
-interpolation between off-road Tobler and on-road walking speeds, weighted
-by a foundation-model-predicted P(road). See ``docs/methodology.md`` for
-the rationale and ``docs/references.md`` for full citations.
+The FM-blended variant (``fm_blended_friction``) is linear interpolation
+between off-road Tobler and on-road walking speeds, weighted by a
+foundation-model-predicted P(road). The blending operation is ordinary
+lerp; the unusual piece is using an FM-derived road probability as the
+weight. We have not found a direct citation for this specific weighting
+source. See ``docs/methodology.md`` for the rationale and
+``docs/references.md`` for the full bibliography.
 """
 from __future__ import annotations
 

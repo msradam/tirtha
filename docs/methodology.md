@@ -175,25 +175,34 @@ broader satellite-imagery-to-graph neighbors. The full bibliography is at
   regression (CQR) variant used in Tirtha's calibration. Angelopoulos
   & Bates (2023) is a useful tutorial reference.
 
-## What Tirtha invents
+## Specific design choices
 
-Four design choices are not in any cited prior work. They are documented
-explicitly so reviewers can see the boundary between applied and novel
-contributions:
+The audits behind this project surveyed adjacent literature (healthcare
+accessibility, robotics off-road navigation, conservation resistance
+surfaces) but cannot rule out prior art in domains we did not check.
+These four choices compose known techniques in ways we have not found
+direct citations for; we are not claiming novelty. See
+[`docs/references.md`](references.md) for the full version and the
+"please open an issue if you have a pointer" caveat.
 
-1. **FM-as-frozen-friction-extractor.** Using TerraMind as a frozen
-   feature extractor whose embeddings are mapped to per-pixel friction
-   via an in-chip logistic regression probe trained against rasterized
-   OSM road labels.
-2. **Linear friction blending** between rule-based off-road Tobler and
-   walking-on-road speeds: `friction = (1 - P) * Tobler + P * road_walk`.
-3. **Unified pixel-plus-road sparse adjacency** as a loadable artifact.
-   AccessMod has the fusion idea conceptually; Tirtha exposes it as a
-   `scipy.sparse.csr_matrix` plus per-node attributes.
-4. **Conformal calibration of MCP outputs.** Conformal prediction is
-   well-studied for regression; applying it to accessibility maps with
-   marginal coverage guarantees over the travel-time raster is, to our
-   knowledge, novel.
+1. **Foundation model as a frozen friction-extractor.** TerraMind
+   embeddings projected to per-pixel friction via an in-chip OSM-
+   distilled probe. Adjacent published work uses pretrained vision
+   features for traversability in robotics (Frey et al. 2023, OVerSeeC
+   2026); the application to humanitarian accessibility is not one
+   we have found cited.
+2. **Linear friction blending** between off-road Tobler and on-road
+   walking speeds, weighted by FM-predicted P(road). The blending is
+   ordinary linear interpolation; the weighting source is the unusual
+   piece.
+3. **Unified pixel-plus-road sparse adjacency as a loadable artifact.**
+   AccessMod (Ray & Ebener 2008) has the fusion idea conceptually;
+   Tirtha bundles it as a single `scipy.sparse.csr_matrix` with per-node
+   attributes.
+4. **Conformal calibration applied to accessibility maps.** Split-
+   conformal CQR (Romano et al. 2019) is well-studied for regression
+   generally; the application to accessibility-map outputs is not one
+   we have found cited.
 
 ---
 

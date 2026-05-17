@@ -215,35 +215,52 @@ imagery." github.com/avanetten/cresi. Satellite imagery to routable road
 graph as NetworkX. Road-only, no off-road, no FM, no friction surface.
 The road extraction half of what Tirtha does end-to-end.
 
-## What Tirtha invents
+## Specific design choices in Tirtha
 
-These design choices have no specific prior-art citation. They are documented
-here so the reader can see exactly which pieces are ours.
+These choices compose known techniques in ways we have not found direct
+citations for, but we are not claiming novelty. The audits behind this
+project surveyed adjacent literature (healthcare accessibility, robotics
+off-road navigation, conservation resistance surfaces) but cannot rule
+out prior art in domains we did not check (rideshare ETAs, finance,
+logistics, agriculture, geomorphology). If you know of prior work that
+matches one of these design choices, please open an issue on the GitHub
+repo so we can cite it.
 
-1. **FM-as-frozen-friction-extractor.** Using a pretrained Earth-observation
-   foundation model (TerraMind) as a frozen feature extractor whose
-   embeddings are projected onto a per-pixel friction estimate via an
-   in-chip logistic regression probe against rasterized OSM road labels.
-   Implementation in `src/tirtha/embed.py:estimate_p_road_from_chip`. To
-   our knowledge, this specific approach is not in any published prior
-   work as of May 2026.
+1. **Foundation model as a frozen friction-extractor.** A pretrained
+   Earth-observation foundation model (TerraMind) is used as a frozen
+   feature extractor whose embeddings are projected onto a per-pixel
+   friction estimate via an in-chip logistic regression probe trained
+   against rasterized OSM road labels.
+   Implementation in `src/tirtha/embed.py:estimate_p_road_from_chip`.
+   Adjacent published work uses pretrained vision features for
+   traversability estimation in robotics (Frey et al. 2023, Rana et al.
+   2026 OVerSeeC); we have not found a healthcare-accessibility or
+   geospatial-friction application of the same pattern, but the
+   pattern itself is the standard transfer-learning recipe.
 
-2. **Linear friction blending.** Combining the rule-based off-road Tobler
-   friction with road-walking speeds via a convex combination weighted by
+2. **Linear friction blending.** Off-road Tobler friction and on-road
+   walking speeds are combined by a convex combination weighted by
    FM-predicted P(road): `friction = (1 - P) * Tobler + P * road_walk`.
-   Implementation in `src/tirtha/friction.py:fm_blended_friction`. Linear
-   blending is the simplest defensible choice; we don't claim it's
-   optimal.
+   This is linear interpolation. Implementation in
+   `src/tirtha/friction.py:fm_blended_friction`. Many cost-surface
+   tools blend friction sources; the specific weighting by an
+   FM-derived road probability is what is unusual, not the blending
+   operation itself.
 
-3. **Unified pixel-plus-road sparse adjacency.** A single
-   `scipy.sparse.csr_matrix` whose rows are both raster pixels and OSMnx
-   road-graph nodes, joined at zero-cost edges where coincident.
+3. **Unified pixel-plus-road sparse adjacency as a loadable artifact.**
+   A single `scipy.sparse.csr_matrix` whose rows are both raster pixels
+   and OSMnx road-graph nodes, joined at zero-cost edges where coincident.
    Implementation in `src/tirtha/graph.py:build_graph`. AccessMod (Ray &
-   Ebener 2008) has the fusion idea conceptually; we expose it as a
-   loadable artifact you can run any graph algorithm on.
+   Ebener 2008) has the fusion idea since 2008; the contribution here
+   is the engineering of bundling it as a single `.npz` with per-node
+   attributes for downstream graph algorithms.
 
-4. **Conformal calibration of MCP outputs.** Applying split-conformal CQR
-   (Romano et al. 2019) to ensemble-derived travel time estimates so the
-   final per-pixel intervals have a marginal coverage guarantee. Conformal
-   prediction is well-studied for regression; applying it end-to-end to
-   accessibility maps is, to our knowledge, novel.
+4. **Conformal calibration applied to accessibility-map outputs.**
+   Split-conformal CQR (Romano et al. 2019) is applied to ensemble-
+   derived travel-time estimates so the final per-pixel intervals have
+   marginal-coverage guarantees. Conformal prediction is well-studied
+   for regression generally; we have not found a citation for the
+   specific application to accessibility maps, but conformal regression
+   on geospatial outputs more broadly is well established. If you know
+   of a specific prior application to accessibility, please open an
+   issue.

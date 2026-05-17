@@ -8,8 +8,11 @@ against the rasterized OSM road network turns those embeddings into
 per-pixel P(road), which we blend with Tobler off-road friction in
 ``tirtha.friction.fm_blended_friction``.
 
-The "FM-as-frozen-friction-extractor" pattern is a Tirtha-original
-design choice; see ``docs/methodology.md`` for rationale and
+The frozen-feature-extractor pattern is standard for transfer learning,
+and pretrained vision features for traversability have been used in
+robotics (Frey et al. 2023, Rana et al. 2026 OVerSeeC). We have not
+found a citation for the specific application to humanitarian
+accessibility friction. See ``docs/methodology.md`` for rationale and
 ``docs/references.md`` for the TerraMind paper citation.
 
 This is the "FM-supervised friction" path described in docs/methodology.md.
