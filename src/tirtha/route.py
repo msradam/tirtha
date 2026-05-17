@@ -1,9 +1,19 @@
 """Shortest-path routing primitives.
 
-Thin wrappers around ``scikit-image.graph.MCP_Geometric`` for multi-source
-Dijkstra over a friction raster. The fusion-graph (pixel grid + OSMnx) lives
-here too as a separate function; default routing uses raster-only because the
-pixel-grid IS a valid road graph at 10–100m resolution with dense OSM coverage.
+Thin wrappers around ``scikit-image.graph.MCP_Geometric`` (van der Walt et al.
+2014) for multi-source Dijkstra (Dijkstra 1959) over a friction raster. The
+8-connected pixel adjacency used here is the standard formulation for raster
+least-cost-path analysis (Goodchild 1977). MCP_Geometric follows the
+geometric-correction convention (Bertolazzi and Frego 2014): friction values
+are multiplied by the Euclidean distance between adjacent pixels so diagonal
+moves are not biased against orthogonal moves.
+
+The fusion graph (pixel grid + OSMnx road graph as one sparse adjacency)
+lives in ``tirtha.graph``. Default routing in this module is raster-only
+because the pixel grid is a valid road graph at 10 to 100m resolution with
+dense OSM coverage.
+
+See ``docs/references.md`` for full citations.
 """
 from __future__ import annotations
 
