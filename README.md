@@ -50,7 +50,25 @@ DEM adds 5 pts over optical-only — this is the multimodal value of TerraMind t
 
 **Uncertainty quantification (figure 14)** — *the open lane no other healthcare-accessibility work currently provides*: B=200 bootstrap probes over the TerraMind S2+S1+DEM embeddings → P(road) ± σ per patch → K=40 perturbed friction surfaces → ensemble MCP → per-pixel mean, std, and 95% CI on travel time. Population-weighted mean 95% CI width: 0.22 min. MAP 2020 has no uncertainty layer; AccessMod has no uncertainty layer; tirtha does.
 
-See [`docs/figures/`](docs/figures/) for all 19 headline visualizations — including figure 17 (Tirtha vs Wu vs MAP four-way head-to-head), figure 18 (naive uncertainty miscalibration), and figure 19 (split-conformal CQR brings empirical 95% coverage to 94.9%).
+See [`docs/figures/`](docs/figures/) for all 20 headline visualizations — including figure 17 (Tirtha vs Wu vs MAP four-way head-to-head), figure 19 (split-conformal CQR brings empirical 95% coverage to 94.9%), and figure 20 (Cox's Bazar transfer demonstration — see below).
+
+### Transfer demonstration — Cox's Bazar refugee camp (figure 20)
+
+The Wu 2025 deep-read identified "transfer to a region where rule-based lookup tables fail" as a required demonstration. We ran the same head-to-head at Kutupalong, Cox's Bazar, Bangladesh (Rohingya refugee camp area, 4.7×4.5 km chip):
+
+| Method | Mean walking time | Max | Issue |
+|---|---|---|---|
+| Tirtha v2 | **22.5 min** | 61.7 min | uses live OSM facilities |
+| Wu 2025 rule-based | 26.3 min | **294.1 min** | WorldCover misclassification → tail outliers |
+| MAP 2020 (Weiss) | **152.1 min** | 192.8 min | **stale facility database — misses camp clinics entirely** |
+
+**Three findings**:
+
+1. **MAP 2020 reports the entire camp as 2+ hours from healthcare** because its static 2020-era facility database does not include the 17 health-related amenities currently tagged in OSM inside the camp. Both Tirtha and Wu — using live OSM data — report ~25 min. **This is the canonical argument for a live, fork-and-run accessibility tool over a published static raster.**
+
+2. **Wu's rule-based method has wild tail outliers** (max 294 min) because ESA WorldCover doesn't have a refugee-camp / informal-settlement class. Camp pixels get assigned to tree/grass/cropland (3-5 km/h) when reality is dense human walking infrastructure. Tirtha v2's slope-only Tobler is more conservative and avoids the brittleness.
+
+3. **Wu and Tirtha still agree at Spearman ρ = 0.992** (same as Blantyre) — methodology changes within rule-based + Tobler + roads don't move rank-ordering much; they move absolute travel times.
 
 ---
 
