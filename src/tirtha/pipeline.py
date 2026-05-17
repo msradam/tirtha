@@ -22,7 +22,12 @@ from tirtha.data import (
     load_osm_facilities,
     load_osm_roads,
 )
-from tirtha.friction import hybrid_friction, rank_of_highway_tag, tobler_friction
+from tirtha.friction import (
+    fm_blended_friction,
+    hybrid_friction,
+    rank_of_highway_tag,
+    tobler_friction,
+)
 from tirtha.metrics import AccessibilityResult, population_weighted_accessibility
 from tirtha.route import multi_source_mcp, seeds_from_geometries
 
@@ -61,6 +66,8 @@ def run_accessibility(
     crs: str | None = None,
     bbox_override: tuple[float, float, float, float] | None = None,
     cap_friction_min_per_m: float = 5.0,
+    friction_method: str = "rules",  # "rules" or "fm"
+    terramind_variant: str = "terramind_v1_small",
     verbose: bool = True,
 ) -> PipelineResult:
     """Compute walking-time accessibility for a region.
@@ -145,9 +152,27 @@ def run_accessibility(
     _log(f"  {len(roads)} road features → {(road_class > 0).sum():,} road pixels")
     _time("roads", t0)
 
-    # --- 4. Hybrid friction ----------------------------------------------
+    # --- 4. Friction surface --------------------------------------------
     t0 = time.time()
-    friction = hybrid_friction(tobler, road_class)
+    if friction_method == "rules":
+        friction = hybrid_friction(tobler, road_class)
+        _log("  friction: rule-based (Tobler + walking on roads)")
+    elif friction_method == "fm":
+        _log("  friction: TerraMind-blended (S2 + S1 + DEM → P(road) → blend)")
+        from tirtha.embed import estimate_p_road_from_chip
+
+        p_road = estimate_p_road_from_chip(
+            bbox=bbox,
+            crs=crs,
+            resolution_m=resolution_m,
+            road_class_full=road_class,
+            full_shape=(H, W),
+            variant=terramind_variant,
+            verbose=verbose,
+        )
+        friction = fm_blended_friction(tobler, p_road)
+    else:
+        raise ValueError(f"friction_method must be 'rules' or 'fm', got {friction_method!r}")
     _time("friction", t0)
 
     # --- 5. Destinations (facilities) + multi-source MCP -----------------

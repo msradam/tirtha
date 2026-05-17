@@ -122,6 +122,18 @@ def accessibility_run(
     crs: Optional[str] = typer.Option(
         None, "--crs", help="Target CRS (auto-picks UTM zone if not given)."
     ),
+    friction_method: str = typer.Option(
+        "rules",
+        "--friction",
+        "-f",
+        help="Friction surface: 'rules' (Tobler + walking on roads, no ML) "
+        "or 'fm' (TerraMind S2+S1+DEM blend, requires --extra ml).",
+    ),
+    terramind_variant: str = typer.Option(
+        "terramind_v1_small",
+        "--terramind-variant",
+        help="TerraMind backbone variant (only used when --friction fm).",
+    ),
     out: Path = typer.Option(
         Path("./out"), "--out", "-o", help="Output directory for rasters + figures."
     ),
@@ -149,6 +161,9 @@ def accessibility_run(
     if not region and not bbox_tuple:
         raise typer.BadParameter("must specify either --region or --bbox")
 
+    if friction_method not in {"rules", "fm"}:
+        raise typer.BadParameter("--friction must be 'rules' or 'fm'")
+
     if not quiet:
         typer.echo(f"region:               {region or '(from bbox)'}")
         if bbox_tuple:
@@ -156,6 +171,9 @@ def accessibility_run(
         typer.echo(f"preset:               {preset}{' (overridden)' if destinations else ''}")
         typer.echo(f"destination tag set:  {tag_dict}")
         typer.echo(f"resolution:           {resolution_m} m")
+        typer.echo(f"friction method:      {friction_method}")
+        if friction_method == "fm":
+            typer.echo(f"terramind variant:    {terramind_variant}")
         typer.echo(f"output dir:           {out}")
         typer.echo("")
 
@@ -165,6 +183,8 @@ def accessibility_run(
         destination_tags=tag_dict,
         resolution_m=resolution_m,
         crs=crs,
+        friction_method=friction_method,
+        terramind_variant=terramind_variant,
         verbose=not quiet,
     )
 
