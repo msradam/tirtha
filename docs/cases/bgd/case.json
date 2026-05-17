@@ -1,0 +1,45 @@
+{
+  "iso3": "BGD",
+  "region": "Cox's Bazar (Kutupalong)",
+  "resolution_m": 10,
+  "blurb": "Rohingya refugee camp area. MAP 2020 missed 17 OSM-tagged clinics inside the camp; tirtha catches them via live OSM.",
+  "elapsed_s": 18.0,
+  "accessibility": {
+    "total_population": 40630.4453125,
+    "thresholds_min": [
+      5,
+      10,
+      15,
+      30,
+      60,
+      120,
+      180
+    ],
+    "pct_within": {
+      "5": 41.68908513608849,
+      "10": 66.28933583325465,
+      "15": 74.4409835835466,
+      "30": 87.61829424017589,
+      "60": 99.99194338758824,
+      "120": 100.0,
+      "180": 100.0
+    },
+    "population_within": {
+      "5": 16938.4609375,
+      "10": 26933.65234375,
+      "15": 30245.703125,
+      "30": 35599.703125,
+      "60": 40627.171875,
+      "120": 40630.4453125,
+      "180": 40630.4453125
+    }
+  },
+  "n_destinations": 17,
+  "bbox_wsen": [
+    92.155,
+    21.18,
+    92.205,
+    21.225
+  ],
+  "crs": "EPSG:32646"
+}

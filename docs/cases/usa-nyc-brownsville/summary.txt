@@ -1,0 +1,14 @@
+tirtha accessibility · Brownsville, Brooklyn, NYC
+  bbox: (-73.92, 40.64, -73.88, 40.68)
+  CRS: EPSG:32618
+  resolution: 10 m
+  destinations: 17
+
+Built-area-weighted walking accessibility:
+  <=   5 min  |   34.7%
+  <=  10 min  |   71.6%
+  <=  15 min  |   90.1%
+  <=  30 min  |  100.0%
+  <=  60 min  |  100.0%
+  <= 120 min  |  100.0%
+  <= 180 min  |  100.0%

@@ -1,0 +1,14 @@
+tirtha accessibility · Sierra Leone
+  bbox (W,S,E,N): [-13.5003389, 6.755, -10.271683, 9.999973]
+  CRS: EPSG:32629
+  resolution: 100 m
+  destinations: 571 OSM features
+
+Population-weighted walking accessibility (WorldPop UN-adjusted):
+  <=   5 min  |   11.6%
+  <=  10 min  |   24.5%
+  <=  15 min  |   32.8%
+  <=  30 min  |   41.9%
+  <=  60 min  |   50.5%
+  <= 120 min  |   63.4%
+  <= 180 min  |   74.5%

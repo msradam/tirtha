@@ -1,0 +1,14 @@
+tirtha accessibility · Cox's Bazar (Kutupalong)
+  bbox: (92.155, 21.18, 92.205, 21.225)
+  CRS: EPSG:32646
+  resolution: 10 m
+  destinations: 17
+
+Built-area-weighted walking accessibility:
+  <=   5 min  |   41.7%
+  <=  10 min  |   66.3%
+  <=  15 min  |   74.4%
+  <=  30 min  |   87.6%
+  <=  60 min  |  100.0%
+  <= 120 min  |  100.0%
+  <= 180 min  |  100.0%

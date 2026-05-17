@@ -1,0 +1,45 @@
+{
+  "iso3": "MWI",
+  "region": "Blantyre, Malawi",
+  "resolution_m": 10,
+  "blurb": "Urban toy chip at 10m around Queen Elizabeth Central Hospital. The Spearman 0.674 vs MAP 2020 result lives here.",
+  "elapsed_s": 24.0,
+  "accessibility": {
+    "total_population": 20723.046875,
+    "thresholds_min": [
+      5,
+      10,
+      15,
+      30,
+      60,
+      120,
+      180
+    ],
+    "pct_within": {
+      "5": 22.913413507756687,
+      "10": 60.275715820625436,
+      "15": 89.52574880775103,
+      "30": 100.0,
+      "60": 100.0,
+      "120": 100.0,
+      "180": 100.0
+    },
+    "population_within": {
+      "5": 4748.357421875,
+      "10": 12490.96484375,
+      "15": 18552.462890625,
+      "30": 20723.046875,
+      "60": 20723.046875,
+      "120": 20723.046875,
+      "180": 20723.046875
+    }
+  },
+  "n_destinations": 5,
+  "bbox_wsen": [
+    34.9939,
+    -15.7976,
+    35.0177,
+    -15.7746
+  ],
+  "crs": "EPSG:32736"
+}

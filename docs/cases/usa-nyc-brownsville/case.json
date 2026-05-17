@@ -1,0 +1,45 @@
+{
+  "iso3": "USA-NYC-BROWNSVILLE",
+  "region": "Brownsville, Brooklyn, NYC",
+  "resolution_m": 10,
+  "blurb": "US urban contrast. Schools are about 2x as accessible as healthcare in a documented health-disparity NYC neighborhood.",
+  "elapsed_s": 44.0,
+  "accessibility": {
+    "total_population": 84139.0,
+    "thresholds_min": [
+      5,
+      10,
+      15,
+      30,
+      60,
+      120,
+      180
+    ],
+    "pct_within": {
+      "5": 34.66882183054231,
+      "10": 71.57323001224165,
+      "15": 90.11041253164406,
+      "30": 100.0,
+      "60": 100.0,
+      "120": 100.0,
+      "180": 100.0
+    },
+    "population_within": {
+      "5": 29170.0,
+      "10": 60221.0,
+      "15": 75818.0,
+      "30": 84139.0,
+      "60": 84139.0,
+      "120": 84139.0,
+      "180": 84139.0
+    }
+  },
+  "n_destinations": 17,
+  "bbox_wsen": [
+    -73.92,
+    40.64,
+    -73.88,
+    40.68
+  ],
+  "crs": "EPSG:32618"
+}

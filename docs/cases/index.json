@@ -1,0 +1,185 @@
+{
+  "cases": [
+    {
+      "iso3": "SLE",
+      "region": "Sierra Leone",
+      "resolution_m": 100,
+      "blurb": "Post-Ebola West Africa. National-scale demo at 100m, ~13M pixels, 571 healthcare facilities, 6.77M population.",
+      "elapsed_s": 240.0,
+      "accessibility": {
+        "total_population": 6767727.0,
+        "thresholds_min": [
+          5,
+          10,
+          15,
+          30,
+          60,
+          120,
+          180
+        ],
+        "pct_within": {
+          "5": 11.64859061986395,
+          "10": 24.547237203864753,
+          "15": 32.79381319607011,
+          "30": 41.89256969141929,
+          "60": 50.50327458539625,
+          "120": 63.35459453373341,
+          "180": 74.54313686116475
+        },
+        "population_within": {
+          "5": 788344.8125,
+          "10": 1661290.0,
+          "15": 2219395.75,
+          "30": 2835174.75,
+          "60": 3417923.75,
+          "120": 4287666.0,
+          "180": 5044876.0
+        }
+      },
+      "n_destinations": 571,
+      "bbox_wsen": [
+        -13.5003389,
+        6.755,
+        -10.271683,
+        9.999973
+      ],
+      "crs": "EPSG:32629"
+    },
+    {
+      "iso3": "MWI",
+      "region": "Blantyre, Malawi",
+      "resolution_m": 10,
+      "blurb": "Urban toy chip at 10m around Queen Elizabeth Central Hospital. The Spearman 0.674 vs MAP 2020 result lives here.",
+      "elapsed_s": 24.0,
+      "accessibility": {
+        "total_population": 20723.046875,
+        "thresholds_min": [
+          5,
+          10,
+          15,
+          30,
+          60,
+          120,
+          180
+        ],
+        "pct_within": {
+          "5": 22.913413507756687,
+          "10": 60.275715820625436,
+          "15": 89.52574880775103,
+          "30": 100.0,
+          "60": 100.0,
+          "120": 100.0,
+          "180": 100.0
+        },
+        "population_within": {
+          "5": 4748.357421875,
+          "10": 12490.96484375,
+          "15": 18552.462890625,
+          "30": 20723.046875,
+          "60": 20723.046875,
+          "120": 20723.046875,
+          "180": 20723.046875
+        }
+      },
+      "n_destinations": 5,
+      "bbox_wsen": [
+        34.9939,
+        -15.7976,
+        35.0177,
+        -15.7746
+      ],
+      "crs": "EPSG:32736"
+    },
+    {
+      "iso3": "BGD",
+      "region": "Cox's Bazar (Kutupalong)",
+      "resolution_m": 10,
+      "blurb": "Rohingya refugee camp area. MAP 2020 missed 17 OSM-tagged clinics inside the camp; tirtha catches them via live OSM.",
+      "elapsed_s": 18.0,
+      "accessibility": {
+        "total_population": 40630.4453125,
+        "thresholds_min": [
+          5,
+          10,
+          15,
+          30,
+          60,
+          120,
+          180
+        ],
+        "pct_within": {
+          "5": 41.68908513608849,
+          "10": 66.28933583325465,
+          "15": 74.4409835835466,
+          "30": 87.61829424017589,
+          "60": 99.99194338758824,
+          "120": 100.0,
+          "180": 100.0
+        },
+        "population_within": {
+          "5": 16938.4609375,
+          "10": 26933.65234375,
+          "15": 30245.703125,
+          "30": 35599.703125,
+          "60": 40627.171875,
+          "120": 40630.4453125,
+          "180": 40630.4453125
+        }
+      },
+      "n_destinations": 17,
+      "bbox_wsen": [
+        92.155,
+        21.18,
+        92.205,
+        21.225
+      ],
+      "crs": "EPSG:32646"
+    },
+    {
+      "iso3": "USA-NYC-BROWNSVILLE",
+      "region": "Brownsville, Brooklyn, NYC",
+      "resolution_m": 10,
+      "blurb": "US urban contrast. Schools are about 2x as accessible as healthcare in a documented health-disparity NYC neighborhood.",
+      "elapsed_s": 44.0,
+      "accessibility": {
+        "total_population": 84139.0,
+        "thresholds_min": [
+          5,
+          10,
+          15,
+          30,
+          60,
+          120,
+          180
+        ],
+        "pct_within": {
+          "5": 34.66882183054231,
+          "10": 71.57323001224165,
+          "15": 90.11041253164406,
+          "30": 100.0,
+          "60": 100.0,
+          "120": 100.0,
+          "180": 100.0
+        },
+        "population_within": {
+          "5": 29170.0,
+          "10": 60221.0,
+          "15": 75818.0,
+          "30": 84139.0,
+          "60": 84139.0,
+          "120": 84139.0,
+          "180": 84139.0
+        }
+      },
+      "n_destinations": 17,
+      "bbox_wsen": [
+        -73.92,
+        40.64,
+        -73.88,
+        40.68
+      ],
+      "crs": "EPSG:32618"
+    }
+  ],
+  "generated_at": "2026-05-17T22:07:13Z"
+}

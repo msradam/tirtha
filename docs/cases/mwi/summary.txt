@@ -1,0 +1,14 @@
+tirtha accessibility · Blantyre, Malawi
+  bbox: (34.9939, -15.7976, 35.0177, -15.7746)
+  CRS: EPSG:32736
+  resolution: 10 m
+  destinations: 5
+
+Built-area-weighted walking accessibility:
+  <=   5 min  |   22.9%
+  <=  10 min  |   60.3%
+  <=  15 min  |   89.5%
+  <=  30 min  |  100.0%
+  <=  60 min  |  100.0%
+  <= 120 min  |  100.0%
+  <= 180 min  |  100.0%
