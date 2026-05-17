@@ -59,6 +59,7 @@ def run_accessibility(
     destination_tags: dict | None = None,
     resolution_m: int = 10,
     crs: str | None = None,
+    bbox_override: tuple[float, float, float, float] | None = None,
     cap_friction_min_per_m: float = 5.0,
     verbose: bool = True,
 ) -> PipelineResult:
@@ -92,11 +93,23 @@ def run_accessibility(
         timings[label] = time.time() - t0
         _log(f"  [{label}] {timings[label]:.1f}s")
 
-    # --- 1. Geocode region -> bbox ----------------------------------------
+    # --- 1. Geocode region -> bbox (or use bbox_override directly) -------
     t0 = time.time()
-    _log(f"[1/6] Geocoding region: {region!r}")
-    boundary = geocode_region(region)
-    bbox = tuple(float(x) for x in boundary.total_bounds)  # type: ignore[assignment]
+    if bbox_override is not None:
+        bbox = tuple(float(x) for x in bbox_override)  # type: ignore[assignment]
+        _log(f"[1/6] Using --bbox: {bbox} (no geocoding)")
+    else:
+        _log(f"[1/6] Geocoding region: {region!r}")
+        try:
+            boundary = geocode_region(region)
+            bbox = tuple(float(x) for x in boundary.total_bounds)  # type: ignore[assignment]
+        except TypeError as e:
+            # Nominatim didn't return a polygon — likely a point/node OSM record.
+            raise RuntimeError(
+                f"Geocoding {region!r} did not return a polygon. Pass --bbox 'W,S,E,N' "
+                f"directly for places Nominatim doesn't have as a polygon "
+                f"(neighborhoods, custom AOIs). Underlying error: {e}"
+            )
     if crs is None:
         crs = _utm_zone_for_bbox(bbox)
     _log(f"  bbox (W,S,E,N) = {bbox}")

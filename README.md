@@ -13,12 +13,24 @@ git clone https://github.com/msradam/geospatial-routing-api.git tirtha
 cd tirtha
 uv sync                       # installs deps; ~3 GB Python ML stack on first run
 
-# Run the pipeline on any geocodable region.
-uv run tirtha accessibility run --region "Brownsville, Brooklyn" --out ./out
+# Run on a named region (anything OSM/Nominatim has as a polygon):
+uv run tirtha accessibility run --region "Sierra Leone" --preset schools --resolution 100 --out ./sl
 
-# Same pipeline, different humanitarian application:
-uv run tirtha accessibility run --region "Sierra Leone" --preset schools --resolution 100 --out ./sl-schools
-uv run tirtha accessibility run --region "Cox's Bazar" --preset shelter --out ./bgd-shelter
+# Or pass an explicit bbox — useful for neighborhoods / informal settlements
+# that Nominatim doesn't have as a polygon. Kew Gardens, Queens (the author's
+# home neighborhood) is the canonical demo case:
+uv run tirtha accessibility run \
+    --bbox "-73.835,40.700,-73.810,40.725" \
+    --region "Kew Gardens, Queens" \
+    --resolution 10 \
+    --out ./kew-health
+
+# Same pipeline, schools instead of healthcare — one argument:
+uv run tirtha accessibility run \
+    --bbox "-73.835,40.700,-73.810,40.725" \
+    --region "Kew Gardens, Queens" \
+    --preset schools \
+    --out ./kew-schools
 ```
 
 Outputs (in `--out`):
@@ -30,17 +42,50 @@ Outputs (in `--out`):
 - `summary.txt` — human-readable summary
 - `figures/headline.png` — four-panel headline figure
 
-CLI surface:
+### The graph artifact
+
+The "image is a graph" thesis exposed as a real loadable object. Build a unified
+pixel + OSM-road graph for a region and run any graph algorithm on it:
+
+```bash
+uv run tirtha graph build \
+    --bbox "-73.835,40.700,-73.810,40.725" \
+    --region "Kew Gardens, Queens" \
+    --resolution 30 \
+    --out kew.graph.npz
+
+uv run tirtha graph inspect kew.graph.npz
+# TirthaGraph[Kew Gardens, Queens] · 95×72px @ 30m
+#   10,202 nodes (6,840 pixel + 3,362 road) · 70,965 edges
+#   62 facility seeds · EPSG:32618
+```
+
+Load it in your own Python:
+
+```python
+from tirtha.graph import load_graph
+import scipy.sparse.csgraph as csg
+
+g = load_graph("kew.graph.npz")
+# g.adj is a scipy.sparse.csr_matrix; g.node_xy, g.node_type, g.facility_node_ids
+distances_from_facilities = csg.dijkstra(g.adj, indices=g.facility_node_ids)
+# or convert to NetworkX, igraph, graph-tool, ... for centrality / community / etc.
+```
+
+### CLI surface
 
 ```
 tirtha
 ├── version              # tirtha version
 ├── cache-info           # show cache contents + total size
-└── accessibility
-    └── run              # the pipeline
+├── accessibility
+│   └── run              # the pipeline → travel-time raster + metrics + figure
+└── graph
+    ├── build            # build the unified pixel + road graph for a region
+    └── inspect          # one-line summary of a saved graph artifact
 ```
 
-A short terminal recording of the demo is in [`demo/`](demo/) — see `demo/README.md` to reproduce.
+A short terminal recording of the demo is in [`demo/`](demo/) — see `demo/README.md` to reproduce with [vhs](https://github.com/charmbracelet/vhs).
 
 ## Headline result (v0 toy, Blantyre chip) — three-way head-to-head
 
